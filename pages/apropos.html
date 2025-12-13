@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>À propos - DataDash</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="../index.html">
+                <i class="fas fa-chart-line me-2"></i>DataDash
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html"><i class="fas fa-home me-1"></i>Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html"><i class="fas fa-tachometer-alt me-1"></i>Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="statistiques.html"><i class="fas fa-chart-bar me-1"></i>Statistiques</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="apropos.html"><i class="fas fa-info-circle me-1"></i>À propos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html"><i class="fas fa-envelope me-1"></i>Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="about-hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h1 class="display-4 fw-bold mb-3">À propos du Projet</h1>
+                    <p class="lead opacity-75">
+                        Découvrez notre tableau de bord dynamique basé sur des APIs publiques,
+                        un projet éducatif démontrant l'utilisation des technologies web modernes.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="py-5">
+        <div class="container">
+            <!-- Project Description -->
+            <section class="mb-5">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <div class="data-card p-4">
+                            <h2 class="fw-bold mb-4">
+                                <i class="fas fa-project-diagram text-primary me-2"></i>
+                                Description du Projet
+                            </h2>
+                            <p class="text-muted">
+                                Ce projet consiste à concevoir et développer une <strong>application web dynamique</strong> 
+                                sous forme de tableau de bord (Dashboard) permettant de <strong>consommer, traiter et visualiser 
+                                des données réelles</strong> issues d'APIs publiques gratuites.
+                            </p>
+                            <p class="text-muted">
+                                L'objectif principal est d'appliquer les notions fondamentales et avancées du développement 
+                                frontend, en mettant l'accent sur la <strong>manipulation des données</strong>, 
+                                <strong>l'asynchronisme</strong> et la <strong>visualisation graphique</strong>.
+                            </p>
+                            <p class="text-muted mb-0">
+                                L'application est composée de plusieurs pages statiques et dynamiques avec une interface 
+                                <strong>responsive</strong> et <strong>ergonomique</strong>. Les données sont récupérées 
+                                au format JSON via des requêtes AJAX, puis affichées dynamiquement sans rechargement de la page.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- APIs Used -->
+            <section class="mb-5">
+                <h2 class="fw-bold text-center mb-4">
+                    <i class="fas fa-plug text-primary me-2"></i>
+                    APIs Publiques Utilisées
+                </h2>
+                <div class="row g-4">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="api-card card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="api-icon bg-info bg-opacity-10 text-info rounded p-3 me-3">
+                                        <i class="fas fa-cloud-sun fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-0">OpenWeatherMap</h5>
+                                        <small class="text-muted">wttr.in</small>
+                                    </div>
+                                </div>
+                                <p class="text-muted small mb-3">
+                                    Récupération des données météorologiques en temps réel : température, 
+                                    humidité, conditions climatiques, prévisions sur plusieurs jours.
+                                </p>
+                                <span class="badge bg-info">Météo</span>
+                                <span class="badge bg-outline-secondary">Gratuit</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="api-card card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="api-icon bg-success bg-opacity-10 text-success rounded p-3 me-3">
+                                        <i class="fas fa-users fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-0">RandomUser API</h5>
+                                        <small class="text-muted">randomuser.me</small>
+                                    </div>
+                                </div>
+                                <p class="text-muted small mb-3">
+                                    Génération de profils utilisateurs fictifs avec photos, noms, emails, 
+                                    localisations pour affichage dans des tableaux interactifs.
+                                </p>
+                                <span class="badge bg-success">Utilisateurs</span>
+                                <span class="badge bg-outline-secondary">Gratuit</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="api-card card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="api-icon bg-primary bg-opacity-10 text-primary rounded p-3 me-3">
+                                        <i class="fas fa-flag fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-0">REST Countries</h5>
+                                        <small class="text-muted">restcountries.com</small>
+                                    </div>
+                                </div>
+                                <p class="text-muted small mb-3">
+                                    Informations détaillées sur les pays du monde : drapeaux, population, 
+                                    capitales, régions, devises et bien plus.
+                                </p>
+                                <span class="badge bg-primary">Pays</span>
+                                <span class="badge bg-outline-secondary">Gratuit</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="api-card card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="api-icon bg-danger bg-opacity-10 text-danger rounded p-3 me-3">
+                                        <i class="fas fa-apple-alt fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-0">Open Food Facts</h5>
+                                        <small class="text-muted">openfoodfacts.org</small>
+                                    </div>
+                                </div>
+                                <p class="text-muted small mb-3">
+                                    Base de données collaborative sur les produits alimentaires : 
+                                    ingrédients, valeurs nutritionnelles, nutri-score.
+                                </p>
+                                <span class="badge bg-danger">Alimentation</span>
+                                <span class="badge bg-outline-secondary">Gratuit</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="api-card card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="api-icon bg-secondary bg-opacity-10 text-secondary rounded p-3 me-3">
+                                        <i class="fas fa-map-marker-alt fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-0">Zippopotam</h5>
+                                        <small class="text-muted">zippopotam.us</small>
+                                    </div>
+                                </div>
+                                <p class="text-muted small mb-3">
+                                    Informations géographiques basées sur les codes postaux : 
+                                    villes, régions, coordonnées GPS pour plusieurs pays.
+                                </p>
+                                <span class="badge bg-secondary">Géolocalisation</span>
+                                <span class="badge bg-outline-secondary">Gratuit</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="api-card card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="api-icon bg-warning bg-opacity-10 text-warning rounded p-3 me-3">
+                                        <i class="fas fa-film fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-0">TMDB API</h5>
+                                        <small class="text-muted">themoviedb.org</small>
+                                    </div>
+                                </div>
+                                <p class="text-muted small mb-3">
+                                    Base de données de films et séries : titres, genres, notes, 
+                                    synopsis, affiches et informations sur les acteurs.
+                                </p>
+                                <span class="badge bg-warning">Films</span>
+                                <span class="badge bg-outline-secondary">Gratuit</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Technologies -->
+            <section class="mb-5">
+                <h2 class="fw-bold text-center mb-4">
+                    <i class="fas fa-code text-primary me-2"></i>
+                    Technologies Utilisées
+                </h2>
+                <div class="row g-4">
+                    <div class="col-6 col-md-4 col-lg-2">
+                        <div class="tech-card">
+                            <div class="tech-icon bg-danger bg-opacity-10 text-danger">
+                                <i class="fab fa-html5"></i>
+                            </div>
+                            <h6>HTML5</h6>
+                            <p class="text-muted small mb-0">Structure sémantique</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-2">
+                        <div class="tech-card">
+                            <div class="tech-icon bg-primary bg-opacity-10 text-primary">
+                                <i class="fab fa-css3-alt"></i>
+                            </div>
+                            <h6>CSS3</h6>
+                            <p class="text-muted small mb-0">Styles & Animations</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-2">
+                        <div class="tech-card">
+                            <div class="tech-icon bg-purple bg-opacity-10" style="color: #7952b3;">
+                                <i class="fab fa-bootstrap"></i>
+                            </div>
+                            <h6>Bootstrap 5</h6>
+                            <p class="text-muted small mb-0">Framework CSS</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-2">
+                        <div class="tech-card">
+                            <div class="tech-icon bg-warning bg-opacity-10 text-warning">
+                                <i class="fab fa-js"></i>
+                            </div>
+                            <h6>JavaScript</h6>
+                            <p class="text-muted small mb-0">Vanilla JS</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-2">
+                        <div class="tech-card">
+                            <div class="tech-icon bg-info bg-opacity-10 text-info">
+                                <i class="fab fa-js"></i>
+                            </div>
+                            <h6>jQuery</h6>
+                            <p class="text-muted small mb-0">AJAX & DOM</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-2">
+                        <div class="tech-card">
+                            <div class="tech-icon bg-success bg-opacity-10 text-success">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <h6>Chart.js</h6>
+                            <p class="text-muted small mb-0">Graphiques</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features -->
+            <section class="mb-5">
+                <h2 class="fw-bold text-center mb-4">
+                    <i class="fas fa-star text-primary me-2"></i>
+                    Fonctionnalités Principales
+                </h2>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="data-card p-4 h-100">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="feature-icon bg-primary text-white rounded-circle me-3" style="min-width: 50px;">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <div>
+                                    <h5>Récupération Dynamique</h5>
+                                    <p class="text-muted small mb-0">
+                                        Les données sont récupérées en temps réel via des appels AJAX 
+                                        aux APIs publiques, sans rechargement de page.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="data-card p-4 h-100">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="feature-icon bg-success text-white rounded-circle me-3" style="min-width: 50px;">
+                                    <i class="fas fa-table"></i>
+                                </div>
+                                <div>
+                                    <h5>Tableaux Interactifs</h5>
+                                    <p class="text-muted small mb-0">
+                                        Utilisation de DataTables pour afficher les données avec recherche, 
+                                        tri et pagination intégrés.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="data-card p-4 h-100">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="feature-icon bg-warning text-white rounded-circle me-3" style="min-width: 50px;">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                                <div>
+                                    <h5>Visualisation Graphique</h5>
+                                    <p class="text-muted small mb-0">
+                                        Création de graphiques dynamiques (barres, circulaires, lignes) 
+                                        pour visualiser les statistiques des données.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="data-card p-4 h-100">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="feature-icon bg-danger text-white rounded-circle me-3" style="min-width: 50px;">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                                <div>
+                                    <h5>Interface Responsive</h5>
+                                    <p class="text-muted small mb-0">
+                                        Design adaptatif pour tous les écrans grâce au système de grille 
+                                        de Bootstrap 5.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="data-card p-4 h-100">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="feature-icon bg-info text-white rounded-circle me-3" style="min-width: 50px;">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div>
+                                    <h5>Validation de Formulaires</h5>
+                                    <p class="text-muted small mb-0">
+                                        Validation JavaScript complète des champs obligatoires, 
+                                        formats d'email, longueurs minimales.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="data-card p-4 h-100">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="feature-icon bg-secondary text-white rounded-circle me-3" style="min-width: 50px;">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div>
+                                    <h5>Gestion des Erreurs</h5>
+                                    <p class="text-muted small mb-0">
+                                        Affichage de messages de chargement et gestion élégante des 
+                                        erreurs de connexion aux APIs.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Project Structure -->
+            <section>
+                <h2 class="fw-bold text-center mb-4">
+                    <i class="fas fa-folder-open text-primary me-2"></i>
+                    Structure du Projet
+                </h2>
+                <div class="row justify-content-center">
+                    <div class="col-lg-6">
+                        <div class="data-card p-4">
+                            <pre class="mb-0" style="background: #f8f9fa; padding: 1rem; border-radius: 10px;"><code>📁 projectTP/
+├── 📄 index.html
+├── 📁 css/
+│   └── 📄 style.css
+├── 📁 js/
+│   └── 📄 main.js
+├── 📁 pages/
+│   ├── 📄 dashboard.html
+│   ├── 📄 statistiques.html
+│   ├── 📄 apropos.html
+│   └── 📄 contact.html
+└── 📁 images/</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-chart-line me-2"></i>DataDash</h5>
+                    <p class="text-muted small">Tableau de bord dynamique basé sur des APIs publiques.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="text-muted small mb-0">&copy; 2025 DataDash - Tous droits réservés</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>

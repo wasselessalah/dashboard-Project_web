@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistiques - DataDash</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="../index.html">
+                <i class="fas fa-chart-line me-2"></i>DataDash
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html"><i class="fas fa-home me-1"></i>Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html"><i class="fas fa-tachometer-alt me-1"></i>Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="statistiques.html"><i class="fas fa-chart-bar me-1"></i>Statistiques</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="apropos.html"><i class="fas fa-info-circle me-1"></i>À propos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html"><i class="fas fa-envelope me-1"></i>Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Stats Header -->
+    <header class="stats-hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="fw-bold mb-2"><i class="fas fa-chart-bar me-2"></i>Statistiques</h1>
+                    <p class="text-white-50 mb-0">Visualisation et analyse des données des APIs</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <button class="btn btn-warning" onclick="refreshAllStats()">
+                        <i class="fas fa-sync-alt me-2"></i>Actualiser
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="py-4">
+        <div class="container">
+            <!-- Summary Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="stat-card primary">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1 small">Total Utilisateurs</p>
+                                <h3 class="fw-bold mb-0" id="stat-users">0</h3>
+                                <small class="text-success"><i class="fas fa-arrow-up me-1"></i>Chargé</small>
+                            </div>
+                            <div class="stat-icon bg-primary bg-opacity-10 text-primary">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="stat-card success">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1 small">Pays Analysés</p>
+                                <h3 class="fw-bold mb-0" id="stat-countries">0</h3>
+                                <small class="text-success"><i class="fas fa-globe me-1"></i>Mondial</small>
+                            </div>
+                            <div class="stat-icon bg-success bg-opacity-10 text-success">
+                                <i class="fas fa-flag"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="stat-card warning">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1 small">Âge Moyen</p>
+                                <h3 class="fw-bold mb-0" id="stat-age">0</h3>
+                                <small class="text-muted"><i class="fas fa-birthday-cake me-1"></i>ans</small>
+                            </div>
+                            <div class="stat-icon bg-warning bg-opacity-10 text-warning">
+                                <i class="fas fa-user-clock"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="stat-card danger">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1 small">Population Totale</p>
+                                <h3 class="fw-bold mb-0" id="stat-population">0</h3>
+                                <small class="text-muted"><i class="fas fa-chart-line me-1"></i>milliards</small>
+                            </div>
+                            <div class="stat-icon bg-danger bg-opacity-10 text-danger">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row 1 -->
+            <div class="row g-4 mb-4">
+                <div class="col-lg-8">
+                    <div class="chart-card">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-globe-americas text-primary me-2"></i>
+                                Population par Région
+                            </h5>
+                            <div class="btn-group btn-group-sm">
+                                <button class="btn btn-outline-primary active" onclick="showPopulationChart('bar')">Barres</button>
+                                <button class="btn btn-outline-primary" onclick="showPopulationChart('line')">Lignes</button>
+                            </div>
+                        </div>
+                        <div class="chart-container" style="height: 350px;">
+                            <canvas id="population-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="chart-card h-100">
+                        <h5 class="card-title">
+                            <i class="fas fa-venus-mars text-primary me-2"></i>
+                            Répartition par Genre
+                        </h5>
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="gender-pie-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row 2 -->
+            <div class="row g-4 mb-4">
+                <div class="col-lg-6">
+                    <div class="chart-card">
+                        <h5 class="card-title">
+                            <i class="fas fa-birthday-cake text-primary me-2"></i>
+                            Distribution des Âges
+                        </h5>
+                        <div class="chart-container">
+                            <canvas id="age-distribution-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="chart-card">
+                        <h5 class="card-title">
+                            <i class="fas fa-map-marked-alt text-primary me-2"></i>
+                            Utilisateurs par Pays
+                        </h5>
+                        <div class="chart-container">
+                            <canvas id="users-country-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row 3 -->
+            <div class="row g-4 mb-4">
+                <div class="col-lg-4">
+                    <div class="chart-card h-100">
+                        <h5 class="card-title">
+                            <i class="fas fa-language text-primary me-2"></i>
+                            Top 10 Langues
+                        </h5>
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="languages-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="chart-card h-100">
+                        <h5 class="card-title">
+                            <i class="fas fa-coins text-primary me-2"></i>
+                            Devises les Plus Utilisées
+                        </h5>
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="currencies-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="chart-card h-100">
+                        <h5 class="card-title">
+                            <i class="fas fa-chart-pie text-primary me-2"></i>
+                            Pays par Continent
+                        </h5>
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="continents-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Tables -->
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="data-card">
+                        <div class="card-header">
+                            <i class="fas fa-trophy text-warning me-2"></i>
+                            Top 10 Pays par Population
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="top-countries-table" class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Pays</th>
+                                            <th>Population</th>
+                                            <th>Région</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="top-countries-body">
+                                        <!-- Data will be loaded dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="data-card">
+                        <div class="card-header">
+                            <i class="fas fa-expand-arrows-alt text-info me-2"></i>
+                            Top 10 Pays par Superficie
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="top-area-table" class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Pays</th>
+                                            <th>Superficie</th>
+                                            <th>Densité</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="top-area-body">
+                                        <!-- Data will be loaded dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Statistics Details -->
+            <div class="row g-4 mt-2">
+                <div class="col-12">
+                    <div class="data-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-users text-primary me-2"></i>Détails des Utilisateurs Générés</span>
+                            <button class="btn btn-sm btn-outline-primary" onclick="loadMoreUsers()">
+                                <i class="fas fa-plus me-1"></i>Générer plus
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="users-stats-table" class="table table-striped" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Photo</th>
+                                            <th>Nom</th>
+                                            <th>Email</th>
+                                            <th>Pays</th>
+                                            <th>Âge</th>
+                                            <th>Genre</th>
+                                            <th>Inscrit le</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-chart-line me-2"></i>DataDash</h5>
+                    <p class="text-muted small">Tableau de bord dynamique basé sur des APIs publiques.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="text-muted small mb-0">&copy; 2025 DataDash - Tous droits réservés</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/statistiques.js"></script>
+</body>
+</html>
+
+        // Refresh all statistics
+        function refreshAllStats() {
+            loadAllData();
+            Utils.showToast('Statistiques actualisées', 'success');
+        }
+
+        // Load all data
+        function loadAllData() {
+            // Load countries data
+            $.ajax({
+                url: 'https://restcountries.com/v3.1/all',
+                method: 'GET',
+                success: function(data) {
+                    allCountries = data;
+                    processCountriesData(data);
+                },
+                error: function() {
+                    console.error('Error loading countries');
+                }
+            });
+
+            // Load users data
+            $.ajax({
+                url: 'https://randomuser.me/api/?results=50',
+                method: 'GET',
+                success: function(data) {
+                    allUsers = data.results;
+                    processUsersData(data.results);
+                },
+                error: function() {
+                    console.error('Error loading users');
+                }
+            });
+        }
+
+        // Process countries data
+        function processCountriesData(countries) {
+            // Update stats
+            $('#stat-countries').text(countries.length);
+            
+            const totalPopulation = countries.reduce((sum, c) => sum + (c.population || 0), 0);
+            $('#stat-population').text((totalPopulation / 1000000000).toFixed(2));
+
+            // Population by region
+            const regionData = {};
+            countries.forEach(c => {
+                const region = c.region || 'Other';
+                if (!regionData[region]) {
+                    regionData[region] = 0;
+                }
+                regionData[region] += c.population || 0;
+            });
+
+            createPopulationChart(regionData, 'bar');
+
+            // Countries by continent
+            const continentCounts = {};
+            countries.forEach(c => {
+                const region = c.region || 'Other';
+                continentCounts[region] = (continentCounts[region] || 0) + 1;
+            });
+
+            ChartManager.createPieChart('continents-chart',
+                Object.keys(continentCounts),
+                Object.values(continentCounts)
+            );
+
+            // Top languages
+            const languageCounts = {};
+            countries.forEach(c => {
+                if (c.languages) {
+                    Object.values(c.languages).forEach(lang => {
+                        languageCounts[lang] = (languageCounts[lang] || 0) + 1;
+                    });
+                }
+            });
+            const topLanguages = Object.entries(languageCounts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 10);
+
+            ChartManager.createBarChart('languages-chart',
+                topLanguages.map(l => l[0].substring(0, 10)),
+                topLanguages.map(l => l[1]),
+                'Nombre de pays'
+            );
+
+            // Top currencies
+            const currencyCounts = {};
+            countries.forEach(c => {
+                if (c.currencies) {
+                    Object.keys(c.currencies).forEach(curr => {
+                        currencyCounts[curr] = (currencyCounts[curr] || 0) + 1;
+                    });
+                }
+            });
+            const topCurrencies = Object.entries(currencyCounts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 8);
+
+            ChartManager.createPieChart('currencies-chart',
+                topCurrencies.map(c => c[0]),
+                topCurrencies.map(c => c[1])
+            );
+
+            // Top countries by population
+            const topByPopulation = [...countries]
+                .filter(c => c.population)
+                .sort((a, b) => b.population - a.population)
+                .slice(0, 10);
+
+            let popHtml = '';
+            topByPopulation.forEach((c, i) => {
+                popHtml += `
+                    <tr>
+                        <td><span class="badge bg-primary">${i + 1}</span></td>
+                        <td>
+                            <img src="${c.flags.png}" width="24" class="me-2 rounded">
+                            ${c.name.common}
+                        </td>
+                        <td>${Utils.formatNumber(c.population)}</td>
+                        <td><span class="badge bg-secondary">${c.region}</span></td>
+                    </tr>
+                `;
+            });
+            $('#top-countries-body').html(popHtml);
+
+            // Top countries by area
+            const topByArea = [...countries]
+                .filter(c => c.area)
+                .sort((a, b) => b.area - a.area)
+                .slice(0, 10);
+
+            let areaHtml = '';
+            topByArea.forEach((c, i) => {
+                const density = c.population && c.area ? Math.round(c.population / c.area) : 0;
+                areaHtml += `
+                    <tr>
+                        <td><span class="badge bg-info">${i + 1}</span></td>
+                        <td>
+                            <img src="${c.flags.png}" width="24" class="me-2 rounded">
+                            ${c.name.common}
+                        </td>
+                        <td>${Utils.formatNumber(Math.round(c.area))} km²</td>
+                        <td>${density} hab/km²</td>
+                    </tr>
+                `;
+            });
+            $('#top-area-body').html(areaHtml);
+        }
+
+        // Create population chart
+        function createPopulationChart(data, type) {
+            const ctx = document.getElementById('population-chart');
+            
+            if (populationChartInstance) {
+                populationChartInstance.destroy();
+            }
+
+            const labels = Object.keys(data);
+            const values = Object.values(data).map(v => v / 1000000000); // Convert to billions
+
+            populationChartInstance = new Chart(ctx, {
+                type: type,
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Population (milliards)',
+                        data: values,
+                        backgroundColor: Utils.getChartColors(labels.length),
+                        borderColor: type === 'line' ? 'rgba(67, 97, 238, 1)' : undefined,
+                        borderWidth: type === 'line' ? 3 : 0,
+                        borderRadius: type === 'bar' ? 8 : 0,
+                        fill: type === 'line',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0,0,0,0.05)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return value + ' Mrd';
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Show population chart in different format
+        function showPopulationChart(type) {
+            const regionData = {};
+            allCountries.forEach(c => {
+                const region = c.region || 'Other';
+                if (!regionData[region]) {
+                    regionData[region] = 0;
+                }
+                regionData[region] += c.population || 0;
+            });
+            
+            createPopulationChart(regionData, type);
+            
+            // Update active button
+            $('.btn-group .btn').removeClass('active');
+            $(`.btn-group .btn:contains('${type === 'bar' ? 'Barres' : 'Lignes'}')`).addClass('active');
+        }
+
+        // Process users data
+        function processUsersData(users) {
+            $('#stat-users').text(users.length);
+
+            // Average age
+            const avgAge = Math.round(users.reduce((sum, u) => sum + u.dob.age, 0) / users.length);
+            $('#stat-age').text(avgAge);
+
+            // Gender distribution
+            const males = users.filter(u => u.gender === 'male').length;
+            const females = users.filter(u => u.gender === 'female').length;
+
+            ChartManager.createPieChart('gender-pie-chart',
+                ['Hommes', 'Femmes'],
+                [males, females],
+                ['rgba(67, 97, 238, 0.8)', 'rgba(247, 37, 133, 0.8)']
+            );
+
+            // Age distribution
+            const ageGroups = {
+                '18-25': 0,
+                '26-35': 0,
+                '36-45': 0,
+                '46-55': 0,
+                '56-65': 0,
+                '65+': 0
+            };
+            users.forEach(u => {
+                const age = u.dob.age;
+                if (age <= 25) ageGroups['18-25']++;
+                else if (age <= 35) ageGroups['26-35']++;
+                else if (age <= 45) ageGroups['36-45']++;
+                else if (age <= 55) ageGroups['46-55']++;
+                else if (age <= 65) ageGroups['56-65']++;
+                else ageGroups['65+']++;
+            });
+
+            ChartManager.createBarChart('age-distribution-chart',
+                Object.keys(ageGroups),
+                Object.values(ageGroups),
+                'Nombre d\'utilisateurs'
+            );
+
+            // Users by country
+            const countryCounts = {};
+            users.forEach(u => {
+                const country = u.location.country;
+                countryCounts[country] = (countryCounts[country] || 0) + 1;
+            });
+            const topCountries = Object.entries(countryCounts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 8);
+
+            ChartManager.createBarChart('users-country-chart',
+                topCountries.map(c => c[0]),
+                topCountries.map(c => c[1]),
+                'Nombre d\'utilisateurs'
+            );
+
+            // Users table
+            displayUsersTable(users);
+        }
+
+        // Display users in DataTable
+        function displayUsersTable(users) {
+            const tableData = users.map(user => [
+                `<img src="${user.picture.thumbnail}" class="rounded-circle" width="40">`,
+                `${user.name.first} ${user.name.last}`,
+                user.email,
+                user.location.country,
+                user.dob.age,
+                `<span class="badge ${user.gender === 'male' ? 'bg-primary' : 'bg-danger'}">${user.gender === 'male' ? 'H' : 'F'}</span>`,
+                new Date(user.registered.date).toLocaleDateString('fr-FR')
+            ]);
+
+            if ($.fn.DataTable.isDataTable('#users-stats-table')) {
+                $('#users-stats-table').DataTable().destroy();
+            }
+
+            $('#users-stats-table').DataTable({
+                data: tableData,
+                columns: [
+                    { title: 'Photo' },
+                    { title: 'Nom' },
+                    { title: 'Email' },
+                    { title: 'Pays' },
+                    { title: 'Âge' },
+                    { title: 'Genre' },
+                    { title: 'Inscrit le' }
+                ],
+                responsive: true,
+                language: {
+                    search: "Rechercher:",
+                    lengthMenu: "Afficher _MENU_ entrées",
+                    info: "Affichage de _START_ à _END_ sur _TOTAL_ entrées",
+                    paginate: {
+                        first: "Premier",
+                        last: "Dernier",
+                        next: "Suivant",
+                        previous: "Précédent"
+                    }
+                },
+                pageLength: 10
+            });
+        }
+
+        // Load more users
+        function loadMoreUsers() {
+            $.ajax({
+                url: 'https://randomuser.me/api/?results=25',
+                method: 'GET',
+                success: function(data) {
+                    allUsers = [...allUsers, ...data.results];
+                    processUsersData(allUsers);
+                    Utils.showToast(`${data.results.length} nouveaux utilisateurs ajoutés`, 'success');
+                },
+                error: function() {
+                    Utils.showToast('Erreur lors du chargement', 'danger');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

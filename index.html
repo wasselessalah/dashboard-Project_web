@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataDash - Tableau de Bord Dynamique</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <i class="fas fa-chart-line me-2"></i>DataDash
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html"><i class="fas fa-home me-1"></i>Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/dashboard.html"><i class="fas fa-tachometer-alt me-1"></i>Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/statistiques.html"><i class="fas fa-chart-bar me-1"></i>Statistiques</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/apropos.html"><i class="fas fa-info-circle me-1"></i>À propos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/contact.html"><i class="fas fa-envelope me-1"></i>Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-6">
+                    <h1 class="display-3 fw-bold text-white mb-4 animate-fade-in">
+                        Tableau de Bord <span class="text-warning">Dynamique</span>
+                    </h1>
+                    <p class="lead text-white-50 mb-4">
+                        Explorez des données en temps réel provenant d'APIs publiques. 
+                        Météo, utilisateurs, films, produits alimentaires et plus encore !
+                    </p>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a href="pages/dashboard.html" class="btn btn-warning btn-lg px-4 py-2">
+                            <i class="fas fa-rocket me-2"></i>Explorer le Dashboard
+                        </a>
+                        <a href="pages/apropos.html" class="btn btn-outline-light btn-lg px-4 py-2">
+                            <i class="fas fa-info-circle me-2"></i>En savoir plus
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block">
+                    <div class="hero-illustration">
+                        <div class="floating-card card-1">
+                            <i class="fas fa-cloud-sun fa-2x text-warning"></i>
+                            <span>Météo</span>
+                        </div>
+                        <div class="floating-card card-2">
+                            <i class="fas fa-users fa-2x text-info"></i>
+                            <span>Utilisateurs</span>
+                        </div>
+                        <div class="floating-card card-3">
+                            <i class="fas fa-film fa-2x text-danger"></i>
+                            <span>Films</span>
+                        </div>
+                        <div class="floating-card card-4">
+                            <i class="fas fa-globe fa-2x text-success"></i>
+                            <span>Pays</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Features Section -->
+    <section class="py-5 bg-light" id="features">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Fonctionnalités Principales</h2>
+                <p class="text-muted">Découvrez ce que notre tableau de bord peut faire pour vous</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card text-center p-4 h-100">
+                        <div class="feature-icon bg-primary text-white rounded-circle mb-3 mx-auto">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h5>APIs Multiples</h5>
+                        <p class="text-muted small">Intégration de plusieurs APIs publiques pour des données variées et riches</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card text-center p-4 h-100">
+                        <div class="feature-icon bg-success text-white rounded-circle mb-3 mx-auto">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h5>Visualisation</h5>
+                        <p class="text-muted small">Graphiques interactifs avec Chart.js pour une analyse visuelle efficace</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card text-center p-4 h-100">
+                        <div class="feature-icon bg-warning text-white rounded-circle mb-3 mx-auto">
+                            <i class="fas fa-table"></i>
+                        </div>
+                        <h5>DataTables</h5>
+                        <p class="text-muted small">Tableaux interactifs avec recherche, tri et pagination intégrés</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card text-center p-4 h-100">
+                        <div class="feature-icon bg-danger text-white rounded-circle mb-3 mx-auto">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h5>Responsive</h5>
+                        <p class="text-muted small">Interface adaptative pour tous les écrans grâce à Bootstrap 5</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- APIs Section -->
+    <section class="py-5" id="apis">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">APIs Publiques Utilisées</h2>
+                <p class="text-muted">Des sources de données fiables et gratuites</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="api-card card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="api-icon bg-info bg-opacity-10 text-info rounded p-3 me-3">
+                                    <i class="fas fa-cloud-sun fa-lg"></i>
+                                </div>
+                                <h5 class="mb-0">OpenWeatherMap</h5>
+                            </div>
+                            <p class="text-muted small">Données météorologiques en temps réel : température, humidité, conditions climatiques.</p>
+                            <span class="badge bg-info">Météo</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="api-card card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="api-icon bg-success bg-opacity-10 text-success rounded p-3 me-3">
+                                    <i class="fas fa-users fa-lg"></i>
+                                </div>
+                                <h5 class="mb-0">RandomUser</h5>
+                            </div>
+                            <p class="text-muted small">Génération de profils utilisateurs fictifs pour affichage dans des tableaux interactifs.</p>
+                            <span class="badge bg-success">Utilisateurs</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="api-card card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="api-icon bg-warning bg-opacity-10 text-warning rounded p-3 me-3">
+                                    <i class="fas fa-film fa-lg"></i>
+                                </div>
+                                <h5 class="mb-0">TMDB</h5>
+                            </div>
+                            <p class="text-muted small">Base de données de films : titres, genres, notes et informations détaillées.</p>
+                            <span class="badge bg-warning">Films</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="api-card card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="api-icon bg-danger bg-opacity-10 text-danger rounded p-3 me-3">
+                                    <i class="fas fa-apple-alt fa-lg"></i>
+                                </div>
+                                <h5 class="mb-0">Open Food Facts</h5>
+                            </div>
+                            <p class="text-muted small">Informations sur les produits alimentaires : catégories et scores nutritionnels.</p>
+                            <span class="badge bg-danger">Alimentation</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="api-card card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="api-icon bg-primary bg-opacity-10 text-primary rounded p-3 me-3">
+                                    <i class="fas fa-flag fa-lg"></i>
+                                </div>
+                                <h5 class="mb-0">REST Countries</h5>
+                            </div>
+                            <p class="text-muted small">Informations détaillées sur les pays du monde avec leurs drapeaux.</p>
+                            <span class="badge bg-primary">Pays</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="api-card card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="api-icon bg-secondary bg-opacity-10 text-secondary rounded p-3 me-3">
+                                    <i class="fas fa-map-marker-alt fa-lg"></i>
+                                </div>
+                                <h5 class="mb-0">Zippopotam</h5>
+                            </div>
+                            <p class="text-muted small">Informations géographiques basées sur les codes postaux.</p>
+                            <span class="badge bg-secondary">Géolocalisation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Preview Section -->
+    <section class="py-5 bg-light" id="preview">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Aperçu Rapide</h2>
+                <p class="text-muted">Un avant-goût des données disponibles</p>
+            </div>
+            <div class="row g-4">
+                <!-- Weather Widget -->
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-info text-white">
+                            <i class="fas fa-cloud-sun me-2"></i>Météo Actuelle
+                        </div>
+                        <div class="card-body" id="weather-widget">
+                            <div class="text-center py-4">
+                                <div class="spinner-border text-info" role="status">
+                                    <span class="visually-hidden">Chargement...</span>
+                                </div>
+                                <p class="text-muted mt-2">Chargement des données météo...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Random User Widget -->
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-success text-white">
+                            <i class="fas fa-user me-2"></i>Utilisateur Aléatoire
+                        </div>
+                        <div class="card-body" id="user-widget">
+                            <div class="text-center py-4">
+                                <div class="spinner-border text-success" role="status">
+                                    <span class="visually-hidden">Chargement...</span>
+                                </div>
+                                <p class="text-muted mt-2">Chargement du profil...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Country Widget -->
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-primary text-white">
+                            <i class="fas fa-globe me-2"></i>Pays Aléatoire
+                        </div>
+                        <div class="card-body" id="country-widget">
+                            <div class="text-center py-4">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Chargement...</span>
+                                </div>
+                                <p class="text-muted mt-2">Chargement du pays...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-5 bg-primary text-white">
+        <div class="container text-center">
+            <h2 class="fw-bold mb-3">Prêt à Explorer ?</h2>
+            <p class="lead mb-4">Découvrez toutes les fonctionnalités de notre tableau de bord interactif</p>
+            <a href="pages/dashboard.html" class="btn btn-warning btn-lg px-5">
+                <i class="fas fa-arrow-right me-2"></i>Accéder au Dashboard
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-chart-line me-2"></i>DataDash</h5>
+                    <p class="text-muted small">Tableau de bord dynamique basé sur des APIs publiques. Projet éducatif démontrant l'utilisation de technologies web modernes.</p>
+                </div>
+                <div class="col-md-3">
+                    <h6>Navigation</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="index.html" class="text-muted">Accueil</a></li>
+                        <li><a href="pages/dashboard.html" class="text-muted">Dashboard</a></li>
+                        <li><a href="pages/statistiques.html" class="text-muted">Statistiques</a></li>
+                        <li><a href="pages/apropos.html" class="text-muted">À propos</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6>Technologies</h6>
+                    <ul class="list-unstyled small text-muted">
+                        <li>HTML5 & CSS3</li>
+                        <li>Bootstrap 5</li>
+                        <li>JavaScript & jQuery</li>
+                        <li>Chart.js & DataTables</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-3">
+            <div class="text-center small text-muted">
+                <p class="mb-0">&copy; 2025 DataDash - Mini-Projet Avancé. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/home.js"></script>
+</body>
+</html>

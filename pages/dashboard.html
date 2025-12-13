@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - DataDash</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="../index.html">
+                <i class="fas fa-chart-line me-2"></i>DataDash
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html"><i class="fas fa-home me-1"></i>Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="dashboard.html"><i class="fas fa-tachometer-alt me-1"></i>Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="statistiques.html"><i class="fas fa-chart-bar me-1"></i>Statistiques</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="apropos.html"><i class="fas fa-info-circle me-1"></i>À propos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html"><i class="fas fa-envelope me-1"></i>Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Header -->
+    <header class="dashboard-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1 class="fw-bold mb-2"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h1>
+                    <p class="text-white-50 mb-0">Explorez les données en temps réel depuis plusieurs APIs</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <button class="btn btn-warning" onclick="refreshAllData()">
+                        <i class="fas fa-sync-alt me-2"></i>Actualiser tout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="py-4">
+        <div class="container">
+            <!-- Stats Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="stat-card primary">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1 small">Utilisateurs</p>
+                                <h3 class="fw-bold mb-0" id="total-users">-</h3>
+                            </div>
+                            <div class="stat-icon bg-primary bg-opacity-10 text-primary">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="stat-card success">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1 small">Pays</p>
+                                <h3 class="fw-bold mb-0" id="total-countries">-</h3>
+                            </div>
+                            <div class="stat-icon bg-success bg-opacity-10 text-success">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="stat-card warning">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1 small">Température</p>
+                                <h3 class="fw-bold mb-0" id="current-temp">-</h3>
+                            </div>
+                            <div class="stat-icon bg-warning bg-opacity-10 text-warning">
+                                <i class="fas fa-thermometer-half"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="stat-card info">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1 small">Produits</p>
+                                <h3 class="fw-bold mb-0" id="total-products">-</h3>
+                            </div>
+                            <div class="stat-icon bg-info bg-opacity-10 text-info">
+                                <i class="fas fa-shopping-basket"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <ul class="nav nav-tabs mb-4" id="dashboardTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button">
+                        <i class="fas fa-users me-2"></i>Utilisateurs
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="countries-tab" data-bs-toggle="tab" data-bs-target="#countries" type="button">
+                        <i class="fas fa-flag me-2"></i>Pays
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="weather-tab" data-bs-toggle="tab" data-bs-target="#weather" type="button">
+                        <i class="fas fa-cloud-sun me-2"></i>Météo
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="food-tab" data-bs-toggle="tab" data-bs-target="#food" type="button">
+                        <i class="fas fa-apple-alt me-2"></i>Alimentation
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="postal-tab" data-bs-toggle="tab" data-bs-target="#postal" type="button">
+                        <i class="fas fa-map-marker-alt me-2"></i>Codes Postaux
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="dashboardTabContent">
+                <!-- Users Tab -->
+                <div class="tab-pane fade show active" id="users" role="tabpanel">
+                    <div class="row mb-4">
+                        <div class="col-md-8">
+                            <div class="data-card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <span><i class="fas fa-table me-2"></i>Liste des Utilisateurs</span>
+                                    <div class="d-flex gap-2">
+                                        <select id="user-nationality" class="form-select form-select-sm" style="width: auto;">
+                                            <option value="">Toutes nationalités</option>
+                                            <option value="fr">France</option>
+                                            <option value="us">États-Unis</option>
+                                            <option value="gb">Royaume-Uni</option>
+                                            <option value="de">Allemagne</option>
+                                            <option value="es">Espagne</option>
+                                            <option value="br">Brésil</option>
+                                        </select>
+                                        <button class="btn btn-sm btn-outline-primary" onclick="loadUsers()">
+                                            <i class="fas fa-sync-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body" id="users-table-container">
+                                    <table id="users-table" class="table table-striped table-hover" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Photo</th>
+                                                <th>Nom</th>
+                                                <th>Email</th>
+                                                <th>Pays</th>
+                                                <th>Âge</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="data-card h-100">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-pie me-2"></i>Répartition par Genre
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="gender-chart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="data-card">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-bar me-2"></i>Répartition par Tranche d'Âge
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="age-chart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Countries Tab -->
+                <div class="tab-pane fade" id="countries" role="tabpanel">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="filter-section">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Filtrer par région</label>
+                                        <select id="region-filter" class="form-select">
+                                            <option value="">Toutes les régions</option>
+                                            <option value="europe">Europe</option>
+                                            <option value="asia">Asie</option>
+                                            <option value="africa">Afrique</option>
+                                            <option value="americas">Amériques</option>
+                                            <option value="oceania">Océanie</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Rechercher un pays</label>
+                                        <div class="search-box">
+                                            <i class="fas fa-search"></i>
+                                            <input type="text" id="country-search" class="form-control" placeholder="Nom du pays...">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 d-flex align-items-end">
+                                        <button class="btn btn-primary w-100" onclick="loadCountries()">
+                                            <i class="fas fa-search me-2"></i>Rechercher
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-4" id="countries-container">
+                        <!-- Countries will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Weather Tab -->
+                <div class="tab-pane fade" id="weather" role="tabpanel">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="filter-section">
+                                <label class="form-label">Rechercher une ville</label>
+                                <div class="input-group">
+                                    <input type="text" id="city-search" class="form-control" placeholder="Ex: Paris, London, Tokyo..." value="Paris">
+                                    <button class="btn btn-primary" onclick="loadWeather()">
+                                        <i class="fas fa-search me-2"></i>Rechercher
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-lg-6">
+                            <div class="weather-main" id="weather-main">
+                                <div class="text-center py-5">
+                                    <div class="spinner-border text-light" role="status"></div>
+                                    <p class="mt-2 mb-0">Chargement des données météo...</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="data-card h-100">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-line me-2"></i>Prévisions sur 3 jours
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="weather-chart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-4 mt-2" id="weather-details">
+                        <!-- Weather details cards -->
+                    </div>
+                </div>
+
+                <!-- Food Tab -->
+                <div class="tab-pane fade" id="food" role="tabpanel">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="filter-section">
+                                <label class="form-label">Rechercher un produit alimentaire</label>
+                                <div class="input-group">
+                                    <input type="text" id="food-search" class="form-control" placeholder="Ex: Nutella, Coca-Cola, Pizza..." value="chocolate">
+                                    <button class="btn btn-primary" onclick="searchFood()">
+                                        <i class="fas fa-search me-2"></i>Rechercher
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-4" id="food-container">
+                        <!-- Food products will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Postal Tab -->
+                <div class="tab-pane fade" id="postal" role="tabpanel">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="filter-section">
+                                <label class="form-label">Rechercher par code postal</label>
+                                <div class="row g-2">
+                                    <div class="col-4">
+                                        <select id="postal-country" class="form-select">
+                                            <option value="fr">France</option>
+                                            <option value="us">États-Unis</option>
+                                            <option value="de">Allemagne</option>
+                                            <option value="es">Espagne</option>
+                                            <option value="it">Italie</option>
+                                            <option value="be">Belgique</option>
+                                            <option value="ch">Suisse</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-5">
+                                        <input type="text" id="postal-code" class="form-control" placeholder="Code postal" value="75001">
+                                    </div>
+                                    <div class="col-3">
+                                        <button class="btn btn-primary w-100" onclick="searchPostalCode()">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div id="postal-result">
+                                <div class="text-center text-muted py-5">
+                                    <i class="fas fa-map-marker-alt fa-3x mb-3"></i>
+                                    <p>Entrez un code postal pour afficher les informations</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="data-card">
+                                <div class="card-header">
+                                    <i class="fas fa-history me-2"></i>Recherches récentes
+                                </div>
+                                <div class="card-body" id="recent-searches">
+                                    <p class="text-muted text-center">Aucune recherche récente</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-chart-line me-2"></i>DataDash</h5>
+                    <p class="text-muted small">Tableau de bord dynamique basé sur des APIs publiques.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="text-muted small mb-0">&copy; 2025 DataDash - Tous droits réservés</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/dashboard.js"></script>
+</body>
+</html>
+    <script>
+        // Global variables
+        let usersData = [];
+        let countriesData = [];
+        let recentSearches = [];
+
+        // Initialize on page load
+        $(document).ready(function() {
+            loadUsers();
+            loadWeather();
+            loadCountries();
+            
+            // Tab change handlers
+            $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
+                const targetId = $(e.target).attr('data-bs-target');
+                if (targetId === '#countries' && countriesData.length === 0) {
+                    loadCountries();
+                }
+            });
+        });
+
+        // Refresh all data
+        function refreshAllData() {
+            loadUsers();
+            loadWeather();
+            loadCountries();
+            Utils.showToast('Données actualisées avec succès', 'success');
+        }
+
+        // ========================================
+        // Users Functions
+        // ========================================
+        function loadUsers() {
+            const nationality = $('#user-nationality').val();
+            Utils.showLoading('#users-table-container');
+            
+            ApiService.getRandomUsers(25, nationality)
+                .done(function(data) {
+                    usersData = data.results;
+                    displayUsersTable(usersData);
+                    updateUserStats(usersData);
+                    createUserCharts(usersData);
+                    $('#total-users').text(usersData.length);
+                })
+                .fail(function() {
+                    Utils.showError('#users-table-container', 'Erreur lors du chargement des utilisateurs');
+                });
+        }
+
+        function displayUsersTable(users) {
+            const tableData = users.map(user => [
+                `<img src="${user.picture.thumbnail}" class="rounded-circle" width="40">`,
+                `${user.name.first} ${user.name.last}`,
+                user.email,
+                user.location.country,
+                user.dob.age
+            ]);
+
+            $('#users-table-container').html(`
+                <table id="users-table" class="table table-striped table-hover" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Photo</th>
+                            <th>Nom</th>
+                            <th>Email</th>
+                            <th>Pays</th>
+                            <th>Âge</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            `);
+
+            DataTableManager.initTable('users-table', tableData, [
+                { title: 'Photo' },
+                { title: 'Nom' },
+                { title: 'Email' },
+                { title: 'Pays' },
+                { title: 'Âge' }
+            ]);
+        }
+
+        function updateUserStats(users) {
+            const males = users.filter(u => u.gender === 'male').length;
+            const females = users.filter(u => u.gender === 'female').length;
+            const avgAge = Math.round(users.reduce((sum, u) => sum + u.dob.age, 0) / users.length);
+        }
+
+        function createUserCharts(users) {
+            // Gender chart
+            const males = users.filter(u => u.gender === 'male').length;
+            const females = users.filter(u => u.gender === 'female').length;
+            ChartManager.createPieChart('gender-chart', 
+                ['Hommes', 'Femmes'], 
+                [males, females],
+                ['rgba(67, 97, 238, 0.8)', 'rgba(247, 37, 133, 0.8)']
+            );
+
+            // Age chart
+            const ageGroups = {
+                '18-25': 0,
+                '26-35': 0,
+                '36-45': 0,
+                '46-55': 0,
+                '56+': 0
+            };
+            users.forEach(u => {
+                const age = u.dob.age;
+                if (age <= 25) ageGroups['18-25']++;
+                else if (age <= 35) ageGroups['26-35']++;
+                else if (age <= 45) ageGroups['36-45']++;
+                else if (age <= 55) ageGroups['46-55']++;
+                else ageGroups['56+']++;
+            });
+            ChartManager.createBarChart('age-chart',
+                Object.keys(ageGroups),
+                Object.values(ageGroups),
+                'Nombre d\'utilisateurs'
+            );
+        }
+
+        // ========================================
+        // Countries Functions
+        // ========================================
+        function loadCountries() {
+            const region = $('#region-filter').val();
+            const search = $('#country-search').val().trim().toLowerCase();
+            
+            Utils.showLoading('#countries-container');
+            
+            let request;
+            if (search) {
+                request = ApiService.getCountryByName(search);
+            } else if (region) {
+                request = ApiService.getCountriesByRegion(region);
+            } else {
+                request = ApiService.getAllCountries();
+            }
+            
+            request
+                .done(function(data) {
+                    countriesData = Array.isArray(data) ? data.slice(0, 24) : [data];
+                    displayCountries(countriesData);
+                    $('#total-countries').text(countriesData.length);
+                })
+                .fail(function() {
+                    Utils.showError('#countries-container', 'Aucun pays trouvé');
+                });
+        }
+
+        function displayCountries(countries) {
+            let html = '';
+            countries.forEach(country => {
+                const population = (country.population / 1000000).toFixed(1);
+                const capital = country.capital ? country.capital[0] : 'N/A';
+                const currencies = country.currencies ? Object.keys(country.currencies)[0] : 'N/A';
+                
+                html += `
+                    <div class="col-md-6 col-lg-4 col-xl-3">
+                        <div class="country-card hover-lift">
+                            <img src="${country.flags.png}" alt="${country.name.common}">
+                            <h5 class="mb-1">${country.name.common}</h5>
+                            <p class="text-muted small mb-2">${country.region}</p>
+                            <div class="row text-center small">
+                                <div class="col-6">
+                                    <i class="fas fa-users text-primary"></i>
+                                    <span class="d-block">${population}M</span>
+                                </div>
+                                <div class="col-6">
+                                    <i class="fas fa-city text-success"></i>
+                                    <span class="d-block">${capital}</span>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <span class="badge bg-secondary">${currencies}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            $('#countries-container').html(html);
+        }
+
+        // ========================================
+        // Weather Functions
+        // ========================================
+        function loadWeather() {
+            const city = $('#city-search').val() || 'Paris';
+            
+            $('#weather-main').html(`
+                <div class="text-center py-5">
+                    <div class="spinner-border text-light" role="status"></div>
+                    <p class="mt-2 mb-0">Chargement des données météo...</p>
+                </div>
+            `);
+            
+            ApiService.getWeather(city)
+                .done(function(data) {
+                    displayWeather(data, city);
+                    createWeatherChart(data);
+                    $('#current-temp').text(data.current_condition[0].temp_C + '°C');
+                })
+                .fail(function() {
+                    $('#weather-main').html(`
+                        <div class="text-center py-5">
+                            <i class="fas fa-exclamation-triangle fa-3x mb-3"></i>
+                            <p class="mb-0">Impossible de charger les données météo</p>
+                        </div>
+                    `);
+                });
+        }
+
+        function displayWeather(data, city) {
+            const current = data.current_condition[0];
+            const weatherDesc = current.weatherDesc[0].value;
+            
+            let weatherIcon = 'fas fa-sun';
+            if (weatherDesc.toLowerCase().includes('cloud')) weatherIcon = 'fas fa-cloud';
+            else if (weatherDesc.toLowerCase().includes('rain')) weatherIcon = 'fas fa-cloud-rain';
+            else if (weatherDesc.toLowerCase().includes('snow')) weatherIcon = 'fas fa-snowflake';
+            else if (weatherDesc.toLowerCase().includes('thunder')) weatherIcon = 'fas fa-bolt';
+            
+            const html = `
+                <div class="text-center">
+                    <h3 class="mb-0">${city}</h3>
+                    <p class="opacity-75 mb-3">${new Date().toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                    <i class="${weatherIcon} fa-4x mb-3"></i>
+                    <div class="display-2 fw-bold">${current.temp_C}°C</div>
+                    <p class="lead mb-4">${weatherDesc}</p>
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <i class="fas fa-tint mb-2"></i>
+                            <p class="mb-0">${current.humidity}%</p>
+                            <small class="opacity-75">Humidité</small>
+                        </div>
+                        <div class="col-4">
+                            <i class="fas fa-wind mb-2"></i>
+                            <p class="mb-0">${current.windspeedKmph} km/h</p>
+                            <small class="opacity-75">Vent</small>
+                        </div>
+                        <div class="col-4">
+                            <i class="fas fa-compress-arrows-alt mb-2"></i>
+                            <p class="mb-0">${current.pressure} hPa</p>
+                            <small class="opacity-75">Pression</small>
+                        </div>
+                    </div>
+                </div>
+            `;
+            $('#weather-main').html(html);
+
+            // Weather details
+            const detailsHtml = `
+                <div class="col-md-4">
+                    <div class="data-card text-center p-4">
+                        <i class="fas fa-eye fa-2x text-info mb-2"></i>
+                        <h4>${current.visibility} km</h4>
+                        <p class="text-muted mb-0">Visibilité</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="data-card text-center p-4">
+                        <i class="fas fa-thermometer-half fa-2x text-danger mb-2"></i>
+                        <h4>${current.FeelsLikeC}°C</h4>
+                        <p class="text-muted mb-0">Ressenti</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="data-card text-center p-4">
+                        <i class="fas fa-cloud fa-2x text-secondary mb-2"></i>
+                        <h4>${current.cloudcover}%</h4>
+                        <p class="text-muted mb-0">Couverture nuageuse</p>
+                    </div>
+                </div>
+            `;
+            $('#weather-details').html(detailsHtml);
+        }
+
+        function createWeatherChart(data) {
+            const forecast = data.weather;
+            const labels = forecast.map(d => {
+                const date = new Date(d.date);
+                return date.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric' });
+            });
+            const maxTemps = forecast.map(d => d.maxtempC);
+            const minTemps = forecast.map(d => d.mintempC);
+
+            ChartManager.createLineChart('weather-chart', labels, [
+                {
+                    label: 'Temp. Max',
+                    data: maxTemps,
+                    borderColor: 'rgba(247, 37, 133, 1)',
+                    backgroundColor: 'rgba(247, 37, 133, 0.1)',
+                    fill: true
+                },
+                {
+                    label: 'Temp. Min',
+                    data: minTemps,
+                    borderColor: 'rgba(67, 97, 238, 1)',
+                    backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                    fill: true
+                }
+            ]);
+        }
+
+        // ========================================
+        // Food Functions
+        // ========================================
+        function searchFood() {
+            const query = $('#food-search').val() || 'chocolate';
+            Utils.showLoading('#food-container');
+            
+            ApiService.searchFoodProducts(query)
+                .done(function(data) {
+                    displayFoodProducts(data.products.slice(0, 12));
+                    $('#total-products').text(data.count || data.products.length);
+                })
+                .fail(function() {
+                    Utils.showError('#food-container', 'Erreur lors de la recherche');
+                });
+        }
+
+        function displayFoodProducts(products) {
+            let html = '';
+            products.forEach(product => {
+                const name = product.product_name || 'Produit inconnu';
+                const brand = product.brands || 'Marque inconnue';
+                const image = product.image_small_url || 'https://via.placeholder.com/150?text=No+Image';
+                const nutriscore = product.nutriscore_grade || 'n';
+                const energy = product.nutriments && product.nutriments.energy_100g 
+                    ? Math.round(product.nutriments.energy_100g / 4.184) + ' kcal' 
+                    : 'N/A';
+                
+                html += `
+                    <div class="col-md-6 col-lg-4 col-xl-3">
+                        <div class="food-card hover-lift">
+                            <img src="${image}" alt="${name}" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
+                            <div class="p-3">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h6 class="mb-0" style="max-width: 70%;">${name.substring(0, 30)}${name.length > 30 ? '...' : ''}</h6>
+                                    <div class="nutriscore nutriscore-${nutriscore}">${nutriscore.toUpperCase()}</div>
+                                </div>
+                                <p class="text-muted small mb-2">${brand}</p>
+                                <span class="badge bg-light text-dark">
+                                    <i class="fas fa-fire text-danger me-1"></i>${energy}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            if (products.length === 0) {
+                html = `
+                    <div class="col-12 text-center py-5">
+                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">Aucun produit trouvé</p>
+                    </div>
+                `;
+            }
+            
+            $('#food-container').html(html);
+        }
+
+        // ========================================
+        // Postal Code Functions
+        // ========================================
+        function searchPostalCode() {
+            const country = $('#postal-country').val();
+            const code = $('#postal-code').val();
+            
+            if (!code) {
+                Utils.showToast('Veuillez entrer un code postal', 'warning');
+                return;
+            }
+            
+            $('#postal-result').html(`
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="mt-2 text-muted">Recherche en cours...</p>
+                </div>
+            `);
+            
+            ApiService.getPostalInfo(country, code)
+                .done(function(data) {
+                    displayPostalResult(data);
+                    addToRecentSearches(country, code, data);
+                })
+                .fail(function() {
+                    $('#postal-result').html(`
+                        <div class="text-center py-5">
+                            <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                            <p class="text-muted">Code postal non trouvé</p>
+                        </div>
+                    `);
+                });
+        }
+
+        function displayPostalResult(data) {
+            const place = data.places[0];
+            const html = `
+                <div class="postal-result">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-map-marker-alt fa-3x mb-2"></i>
+                        <h3 class="mb-0">${place['place name']}</h3>
+                        <p class="opacity-75">${data['post code']}</p>
+                    </div>
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <h5>${place.state}</h5>
+                            <small class="opacity-75">Région/État</small>
+                        </div>
+                        <div class="col-6">
+                            <h5>${data.country}</h5>
+                            <small class="opacity-75">Pays</small>
+                        </div>
+                    </div>
+                    <hr class="my-3 opacity-25">
+                    <div class="row text-center small">
+                        <div class="col-6">
+                            <i class="fas fa-compass me-1"></i>
+                            <span>Lat: ${place.latitude}</span>
+                        </div>
+                        <div class="col-6">
+                            <i class="fas fa-compass me-1"></i>
+                            <span>Lng: ${place.longitude}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            $('#postal-result').html(html);
+        }
+
+        function addToRecentSearches(country, code, data) {
+            const place = data.places[0];
+            recentSearches.unshift({
+                country: data.country,
+                code: code,
+                place: place['place name']
+            });
+            
+            if (recentSearches.length > 5) {
+                recentSearches.pop();
+            }
+            
+            let html = '<ul class="list-group list-group-flush">';
+            recentSearches.forEach((search, index) => {
+                html += `
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>
+                            <i class="fas fa-map-pin text-primary me-2"></i>
+                            ${search.place}
+                        </span>
+                        <span class="badge bg-primary">${search.code}</span>
+                    </li>
+                `;
+            });
+            html += '</ul>';
+            
+            $('#recent-searches').html(html);
+        }
+    </script>
+</body>
+</html>
