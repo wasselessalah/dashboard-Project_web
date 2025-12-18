@@ -1,505 +1,562 @@
 /**
- * DataDash - Dashboard Page Script
- * Scripts pour la page tableau de bord
+ * Flight & Passengers Tracker
+ * Dashboard JavaScript File
+ * Handles flight data fetching, DataTables, and Chart.js visualizations
  */
 
 // Global variables
-let usersData = [];
-let countriesData = [];
-let recentSearches = [];
+let flightsData = [];
+let flightsTable = null;
+let countryPieChart = null;
+let altitudeBarChart = null;
 
-// Initialize on page load
+// API URLs
+const OPENSKY_API_URL = 'https://opensky-network.org/api/states/all';
+
 $(document).ready(function() {
-    // Load all data at startup
-    loadUsers();
-    loadWeather();
-    loadCountries();
-    searchFood(); // Load food products automatically
+    console.log('Dashboard initialized');
     
-    // Tab change handlers - reload data when switching tabs if needed
-    $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
-        const targetId = $(e.target).attr('data-bs-target');
-        if (targetId === '#countries' && countriesData.length === 0) {
-            loadCountries();
-        }
-        if (targetId === '#food' && $('#food-container').children().length === 0) {
-            searchFood();
-        }
+    // Load flight data on page load
+    loadFlightData();
+    
+    // Refresh button click handler
+    $('#refreshData').on('click', function() {
+        loadFlightData();
     });
 });
 
-// Refresh all data
-function refreshAllData() {
-    loadUsers();
-    loadWeather();
-    loadCountries();
-    Utils.showToast('Données actualisées avec succès', 'success');
-}
-
-// ========================================
-// Users Functions
-// ========================================
-function loadUsers() {
-    const nationality = $('#user-nationality').val();
-    Utils.showLoading('#users-table-container');
+/**
+ * Load flight data from OpenSky Network API
+ */
+function loadFlightData() {
+    // Show loading indicator
+    $('#loadingIndicator').removeClass('d-none');
+    $('#dashboardContent').addClass('d-none');
+    $('#errorMessage').addClass('d-none');
     
-    ApiService.getRandomUsers(25, nationality)
-        .done(function(data) {
-            usersData = data.results;
-            displayUsersTable(usersData);
-            updateUserStats(usersData);
-            createUserCharts(usersData);
-            $('#total-users').text(usersData.length);
-        })
-        .fail(function() {
-            Utils.showError('#users-table-container', 'Erreur lors du chargement des utilisateurs');
-        });
-}
-
-function displayUsersTable(users) {
-    const tableData = users.map(user => [
-        `<img src="${user.picture.thumbnail}" class="rounded-circle" width="40">`,
-        `${user.name.first} ${user.name.last}`,
-        user.email,
-        user.location.country,
-        user.dob.age
-    ]);
-
-    $('#users-table-container').html(`
-        <table id="users-table" class="table table-striped table-hover" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Photo</th>
-                    <th>Nom</th>
-                    <th>Email</th>
-                    <th>Pays</th>
-                    <th>Âge</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    `);
-
-    DataTableManager.initTable('users-table', tableData, [
-        { title: 'Photo' },
-        { title: 'Nom' },
-        { title: 'Email' },
-        { title: 'Pays' },
-        { title: 'Âge' }
-    ]);
-}
-
-function updateUserStats(users) {
-    const males = users.filter(u => u.gender === 'male').length;
-    const females = users.filter(u => u.gender === 'female').length;
-    const avgAge = Math.round(users.reduce((sum, u) => sum + u.dob.age, 0) / users.length);
-}
-
-function createUserCharts(users) {
-    // Gender chart
-    const males = users.filter(u => u.gender === 'male').length;
-    const females = users.filter(u => u.gender === 'female').length;
-    ChartManager.createPieChart('gender-chart', 
-        ['Hommes', 'Femmes'], 
-        [males, females],
-        ['rgba(67, 97, 238, 0.8)', 'rgba(247, 37, 133, 0.8)']
-    );
-
-    // Age chart
-    const ageGroups = {
-        '18-25': 0,
-        '26-35': 0,
-        '36-45': 0,
-        '46-55': 0,
-        '56+': 0
-    };
-    users.forEach(u => {
-        const age = u.dob.age;
-        if (age <= 25) ageGroups['18-25']++;
-        else if (age <= 35) ageGroups['26-35']++;
-        else if (age <= 45) ageGroups['36-45']++;
-        else if (age <= 55) ageGroups['46-55']++;
-        else ageGroups['56+']++;
-    });
-    ChartManager.createBarChart('age-chart',
-        Object.keys(ageGroups),
-        Object.values(ageGroups),
-        'Nombre d\'utilisateurs'
-    );
-}
-
-// ========================================
-// Countries Functions
-// ========================================
-function loadCountries() {
-    const region = $('#region-filter').val();
-    const search = $('#country-search').val().trim().toLowerCase();
+    // Disable refresh button during loading
+    $('#refreshData').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Chargement...');
     
-    Utils.showLoading('#countries-container');
-    
-    let request;
-    if (search) {
-        request = ApiService.getCountryByName(search);
-    } else if (region) {
-        request = ApiService.getCountriesByRegion(region);
-    } else {
-        request = ApiService.getAllCountries();
-    }
-    
-    request
-        .done(function(data) {
-            if (data && data.length > 0) {
-                countriesData = Array.isArray(data) ? data.slice(0, 24) : [data];
-                displayCountries(countriesData);
-                $('#total-countries').text(countriesData.length);
+    // AJAX request to OpenSky Network API
+    $.ajax({
+        url: OPENSKY_API_URL,
+        method: 'GET',
+        dataType: 'json',
+        timeout: 30000, // 30 second timeout
+        success: function(response) {
+            console.log('Flight data received:', response);
+            
+            if (response && response.states && response.states.length > 0) {
+                // Process and store flight data
+                flightsData = processFlightData(response.states);
+                
+                // Update statistics
+                updateStatistics(flightsData);
+                
+                // Initialize or update DataTable
+                initializeDataTable(flightsData);
+                
+                // Initialize or update charts
+                initializeCharts(flightsData);
+                
+                // Show dashboard content
+                $('#loadingIndicator').addClass('d-none');
+                $('#dashboardContent').removeClass('d-none');
             } else {
-                showCountriesError('Aucun pays trouvé');
+                showError('Aucune donnée de vol disponible.');
             }
-        })
-        .fail(function(xhr, status, error) {
-            console.error('Countries API error:', error);
-            showCountriesError('Aucun pays trouvé');
-        });
-}
-
-function showCountriesError(message) {
-    $('#countries-container').html(`
-        <div class="col-12 text-center py-5">
-            <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
-            <p class="text-danger">${message}</p>
-            <button class="btn btn-danger" onclick="loadCountries()">
-                <i class="fas fa-redo me-2"></i>Réessayer
-            </button>
-        </div>
-    `);
-    $('#total-countries').text('0');
-}
-
-function displayCountries(countries) {
-    let html = '';
-    countries.forEach(country => {
-        const population = (country.population / 1000000).toFixed(1);
-        const capital = country.capital ? country.capital[0] : 'N/A';
-        const currencies = country.currencies ? Object.keys(country.currencies)[0] : 'N/A';
-        
-        html += `
-            <div class="col-md-6 col-lg-4 col-xl-3">
-                <div class="country-card hover-lift">
-                    <img src="${country.flags.png}" alt="${country.name.common}">
-                    <h5 class="mb-1">${country.name.common}</h5>
-                    <p class="text-muted small mb-2">${country.region}</p>
-                    <div class="row text-center small">
-                        <div class="col-6">
-                            <i class="fas fa-users text-primary"></i>
-                            <span class="d-block">${population}M</span>
-                        </div>
-                        <div class="col-6">
-                            <i class="fas fa-city text-success"></i>
-                            <span class="d-block">${capital}</span>
-                        </div>
-                    </div>
-                    <div class="mt-2">
-                        <span class="badge bg-secondary">${currencies}</span>
-                    </div>
-                </div>
-            </div>
-        `;
-    });
-    $('#countries-container').html(html);
-}
-
-// ========================================
-// Weather Functions
-// ========================================
-function loadWeather() {
-    const city = $('#city-search').val() || 'Paris';
-    
-    $('#weather-main').html(`
-        <div class="text-center py-5">
-            <div class="spinner-border text-light" role="status"></div>
-            <p class="mt-2 mb-0">Chargement des données météo...</p>
-        </div>
-    `);
-    
-    ApiService.getWeather(city)
-        .done(function(data) {
-            displayWeather(data, city);
-            createWeatherChart(data);
-            $('#current-temp').text(data.current_condition[0].temp_C + '°C');
-        })
-        .fail(function() {
-            $('#weather-main').html(`
-                <div class="text-center py-5">
-                    <i class="fas fa-exclamation-triangle fa-3x mb-3"></i>
-                    <p class="mb-0">Impossible de charger les données météo</p>
-                </div>
-            `);
-        });
-}
-
-function displayWeather(data, city) {
-    const current = data.current_condition[0];
-    const weatherDesc = current.weatherDesc[0].value;
-    
-    let weatherIcon = 'fas fa-sun';
-    if (weatherDesc.toLowerCase().includes('cloud')) weatherIcon = 'fas fa-cloud';
-    else if (weatherDesc.toLowerCase().includes('rain')) weatherIcon = 'fas fa-cloud-rain';
-    else if (weatherDesc.toLowerCase().includes('snow')) weatherIcon = 'fas fa-snowflake';
-    else if (weatherDesc.toLowerCase().includes('thunder')) weatherIcon = 'fas fa-bolt';
-    
-    const html = `
-        <div class="text-center">
-            <h3 class="mb-0">${city}</h3>
-            <p class="opacity-75 mb-3">${new Date().toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
-            <i class="${weatherIcon} fa-4x mb-3"></i>
-            <div class="display-2 fw-bold">${current.temp_C}°C</div>
-            <p class="lead mb-4">${weatherDesc}</p>
-            <div class="row text-center">
-                <div class="col-4">
-                    <i class="fas fa-tint mb-2"></i>
-                    <p class="mb-0">${current.humidity}%</p>
-                    <small class="opacity-75">Humidité</small>
-                </div>
-                <div class="col-4">
-                    <i class="fas fa-wind mb-2"></i>
-                    <p class="mb-0">${current.windspeedKmph} km/h</p>
-                    <small class="opacity-75">Vent</small>
-                </div>
-                <div class="col-4">
-                    <i class="fas fa-compress-arrows-alt mb-2"></i>
-                    <p class="mb-0">${current.pressure} hPa</p>
-                    <small class="opacity-75">Pression</small>
-                </div>
-            </div>
-        </div>
-    `;
-    $('#weather-main').html(html);
-
-    // Weather details
-    const detailsHtml = `
-        <div class="col-md-4">
-            <div class="data-card text-center p-4">
-                <i class="fas fa-eye fa-2x text-info mb-2"></i>
-                <h4>${current.visibility} km</h4>
-                <p class="text-muted mb-0">Visibilité</p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="data-card text-center p-4">
-                <i class="fas fa-thermometer-half fa-2x text-danger mb-2"></i>
-                <h4>${current.FeelsLikeC}°C</h4>
-                <p class="text-muted mb-0">Ressenti</p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="data-card text-center p-4">
-                <i class="fas fa-cloud fa-2x text-secondary mb-2"></i>
-                <h4>${current.cloudcover}%</h4>
-                <p class="text-muted mb-0">Couverture nuageuse</p>
-            </div>
-        </div>
-    `;
-    $('#weather-details').html(detailsHtml);
-}
-
-function createWeatherChart(data) {
-    const forecast = data.weather;
-    const labels = forecast.map(d => {
-        const date = new Date(d.date);
-        return date.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric' });
-    });
-    const maxTemps = forecast.map(d => d.maxtempC);
-    const minTemps = forecast.map(d => d.mintempC);
-
-    ChartManager.createLineChart('weather-chart', labels, [
-        {
-            label: 'Temp. Max',
-            data: maxTemps,
-            borderColor: 'rgba(247, 37, 133, 1)',
-            backgroundColor: 'rgba(247, 37, 133, 0.1)',
-            fill: true
         },
-        {
-            label: 'Temp. Min',
-            data: minTemps,
-            borderColor: 'rgba(67, 97, 238, 1)',
-            backgroundColor: 'rgba(67, 97, 238, 0.1)',
-            fill: true
-        }
-    ]);
-}
-
-// ========================================
-// Food Functions
-// ========================================
-function searchFood() {
-    const query = $('#food-search').val() || 'chocolate';
-    Utils.showLoading('#food-container');
-    
-    ApiService.searchFoodProducts(query)
-        .done(function(data) {
-            if (data && data.products && data.products.length > 0) {
-                displayFoodProducts(data.products.slice(0, 12));
-                $('#total-products').text(data.count || data.products.length);
+        error: function(xhr, status, error) {
+            console.error('Error fetching flight data:', error);
+            
+            // Show error with fallback to demo data
+            let errorMsg = 'Impossible de charger les données. ';
+            if (status === 'timeout') {
+                errorMsg += 'La requête a expiré.';
+            } else if (xhr.status === 0) {
+                errorMsg += 'Problème de connexion réseau ou CORS.';
             } else {
-                showFoodError('Aucun produit trouvé');
+                errorMsg += `Erreur ${xhr.status}: ${error}`;
             }
-        })
-        .fail(function(xhr, status, error) {
-            console.error('Food API error:', error);
-            showFoodError('Erreur lors de la recherche');
-        });
+            
+            // Load demo data as fallback
+            loadDemoData();
+        },
+        complete: function() {
+            // Re-enable refresh button
+            $('#refreshData').prop('disabled', false).html('<i class="fas fa-sync-alt me-2"></i>Actualiser');
+        }
+    });
 }
 
-function showFoodError(message) {
-    $('#food-container').html(`
-        <div class="col-12 text-center py-5">
-            <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
-            <p class="text-muted">${message}</p>
-            <button class="btn btn-primary" onclick="searchFood()">
-                <i class="fas fa-redo me-2"></i>Réessayer
-            </button>
-        </div>
-    `);
-    $('#total-products').text('0');
+/**
+ * Load demo data when API fails
+ */
+function loadDemoData() {
+    console.log('Loading demo data...');
+    
+    // Generate demo flight data
+    const demoData = generateDemoFlights(50);
+    flightsData = demoData;
+    
+    // Update statistics
+    updateStatistics(flightsData);
+    
+    // Initialize DataTable
+    initializeDataTable(flightsData);
+    
+    // Initialize charts
+    initializeCharts(flightsData);
+    
+    // Show dashboard content with info alert
+    $('#loadingIndicator').addClass('d-none');
+    $('#dashboardContent').removeClass('d-none');
+    
+    // Show info message about demo data
+    showInfoAlert();
 }
 
-function displayFoodProducts(products) {
-    let html = '';
-    products.forEach(product => {
-        const name = product.product_name || 'Produit inconnu';
-        const brand = product.brands || 'Marque inconnue';
-        const image = product.image_small_url || 'https://via.placeholder.com/150?text=No+Image';
-        const nutriscore = product.nutriscore_grade || 'n';
-        const energy = product.nutriments && product.nutriments.energy_100g 
-            ? Math.round(product.nutriments.energy_100g / 4.184) + ' kcal' 
-            : 'N/A';
+/**
+ * Generate demo flight data
+ * @param {number} count - Number of flights to generate
+ * @returns {Array} Array of flight objects
+ */
+function generateDemoFlights(count) {
+    const countries = ['France', 'United States', 'Germany', 'United Kingdom', 'Spain', 
+                       'Italy', 'Netherlands', 'Belgium', 'Switzerland', 'Canada',
+                       'Japan', 'China', 'Australia', 'Brazil', 'India', 'Tunisia'];
+    const airlines = ['AF', 'LH', 'BA', 'AA', 'DL', 'UA', 'EK', 'QF', 'SQ', 'JL', 'TU'];
+    
+    // Airports with country and city
+    const airports = [
+        { code: 'CDG', city: 'Paris', country: 'France' },
+        { code: 'JFK', city: 'New York', country: 'United States' },
+        { code: 'LHR', city: 'Londres', country: 'United Kingdom' },
+        { code: 'FRA', city: 'Francfort', country: 'Germany' },
+        { code: 'DXB', city: 'Dubai', country: 'UAE' },
+        { code: 'TUN', city: 'Tunis', country: 'Tunisia' },
+        { code: 'ORY', city: 'Paris Orly', country: 'France' },
+        { code: 'FCO', city: 'Rome', country: 'Italy' },
+        { code: 'MAD', city: 'Madrid', country: 'Spain' },
+        { code: 'AMS', city: 'Amsterdam', country: 'Netherlands' },
+        { code: 'IST', city: 'Istanbul', country: 'Turkey' },
+        { code: 'CAI', city: 'Le Caire', country: 'Egypt' },
+        { code: 'CMN', city: 'Casablanca', country: 'Morocco' },
+        { code: 'DOH', city: 'Doha', country: 'Qatar' },
+        { code: 'SIN', city: 'Singapour', country: 'Singapore' }
+    ];
+    
+    const flights = [];
+    
+    for (let i = 0; i < count; i++) {
+        const airline = airlines[Math.floor(Math.random() * airlines.length)];
+        const flightNum = Math.floor(Math.random() * 9000) + 1000;
+        const departure = airports[Math.floor(Math.random() * airports.length)];
+        let destination = airports[Math.floor(Math.random() * airports.length)];
+        // Ensure destination is different from departure
+        while (destination.code === departure.code) {
+            destination = airports[Math.floor(Math.random() * airports.length)];
+        }
         
-        html += `
-            <div class="col-md-6 col-lg-4 col-xl-3">
-                <div class="food-card hover-lift">
-                    <img src="${image}" alt="${name}" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
-                    <div class="p-3">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <h6 class="mb-0" style="max-width: 70%;">${name.substring(0, 30)}${name.length > 30 ? '...' : ''}</h6>
-                            <div class="nutriscore nutriscore-${nutriscore}">${nutriscore.toUpperCase()}</div>
-                        </div>
-                        <p class="text-muted small mb-2">${brand}</p>
-                        <span class="badge bg-light text-dark">
-                            <i class="fas fa-fire text-danger me-1"></i>${energy}
-                        </span>
-                    </div>
-                </div>
-            </div>
-        `;
-    });
-    
-    if (products.length === 0) {
-        html = `
-            <div class="col-12 text-center py-5">
-                <i class="fas fa-search fa-3x text-muted mb-3"></i>
-                <p class="text-muted">Aucun produit trouvé</p>
-            </div>
-        `;
+        flights.push({
+            icao24: generateRandomId(),
+            callsign: `${airline}${flightNum}`,
+            country: countries[Math.floor(Math.random() * countries.length)],
+            departure: departure,
+            destination: destination,
+            longitude: (Math.random() * 360 - 180).toFixed(4),
+            latitude: (Math.random() * 180 - 90).toFixed(4),
+            altitude: Math.floor(Math.random() * 12000 + 1000),
+            velocity: Math.floor(Math.random() * 300 + 100),
+            heading: Math.floor(Math.random() * 360),
+            onGround: false
+        });
     }
     
-    $('#food-container').html(html);
+    return flights;
 }
 
-// ========================================
-// Postal Code Functions
-// ========================================
-function searchPostalCode() {
-    const country = $('#postal-country').val();
-    const code = $('#postal-code').val();
+/**
+ * Generate random flight ID
+ */
+function generateRandomId() {
+    return Math.random().toString(36).substring(2, 8).toUpperCase();
+}
+
+/**
+ * Process raw flight data from API
+ * @param {Array} states - Raw states array from API
+ * @returns {Array} Processed flight data
+ */
+function processFlightData(states) {
+    // Airports for simulated departure/destination
+    const airports = [
+        { code: 'CDG', city: 'Paris', country: 'France' },
+        { code: 'JFK', city: 'New York', country: 'United States' },
+        { code: 'LHR', city: 'Londres', country: 'United Kingdom' },
+        { code: 'FRA', city: 'Francfort', country: 'Germany' },
+        { code: 'DXB', city: 'Dubai', country: 'UAE' },
+        { code: 'TUN', city: 'Tunis', country: 'Tunisia' },
+        { code: 'ORY', city: 'Paris Orly', country: 'France' },
+        { code: 'FCO', city: 'Rome', country: 'Italy' },
+        { code: 'MAD', city: 'Madrid', country: 'Spain' },
+        { code: 'AMS', city: 'Amsterdam', country: 'Netherlands' },
+        { code: 'IST', city: 'Istanbul', country: 'Turkey' },
+        { code: 'CAI', city: 'Le Caire', country: 'Egypt' },
+        { code: 'CMN', city: 'Casablanca', country: 'Morocco' },
+        { code: 'DOH', city: 'Doha', country: 'Qatar' },
+        { code: 'SIN', city: 'Singapour', country: 'Singapore' }
+    ];
     
-    if (!code) {
-        Utils.showToast('Veuillez entrer un code postal', 'warning');
-        return;
-    }
-    
-    $('#postal-result').html(`
-        <div class="text-center py-5">
-            <div class="spinner-border text-primary" role="status"></div>
-            <p class="mt-2 text-muted">Recherche en cours...</p>
-        </div>
-    `);
-    
-    ApiService.getPostalInfo(country, code)
-        .done(function(data) {
-            displayPostalResult(data);
-            addToRecentSearches(country, code, data);
-        })
-        .fail(function() {
-            $('#postal-result').html(`
-                <div class="text-center py-5">
-                    <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
-                    <p class="text-muted">Code postal non trouvé</p>
-                </div>
-            `);
+    return states
+        .filter(state => state[1] && state[1].trim() !== '') // Filter out flights without callsign
+        .slice(0, 200) // Limit to 200 flights for performance
+        .map(state => {
+            const departure = airports[Math.floor(Math.random() * airports.length)];
+            let destination = airports[Math.floor(Math.random() * airports.length)];
+            while (destination.code === departure.code) {
+                destination = airports[Math.floor(Math.random() * airports.length)];
+            }
+            return {
+                icao24: state[0] || 'N/A',
+                callsign: (state[1] || 'N/A').trim(),
+                country: state[2] || 'Unknown',
+                departure: departure,
+                destination: destination,
+                longitude: state[5] ? state[5].toFixed(4) : 'N/A',
+                latitude: state[6] ? state[6].toFixed(4) : 'N/A',
+                altitude: state[7] ? Math.round(state[7]) : 0,
+                velocity: state[9] ? Math.round(state[9]) : 0,
+                heading: state[10] ? Math.round(state[10]) : 0,
+                onGround: state[8] || false
+            };
         });
 }
 
-function displayPostalResult(data) {
-    const place = data.places[0];
-    const html = `
-        <div class="postal-result">
-            <div class="text-center mb-4">
-                <i class="fas fa-map-marker-alt fa-3x mb-2"></i>
-                <h3 class="mb-0">${place['place name']}</h3>
-                <p class="opacity-75">${data['post code']}</p>
-            </div>
-            <div class="row text-center">
-                <div class="col-6">
-                    <h5>${place.state}</h5>
-                    <small class="opacity-75">Région/État</small>
-                </div>
-                <div class="col-6">
-                    <h5>${data.country}</h5>
-                    <small class="opacity-75">Pays</small>
-                </div>
-            </div>
-            <hr class="my-3 opacity-25">
-            <div class="row text-center small">
-                <div class="col-6">
-                    <i class="fas fa-compass me-1"></i>
-                    <span>Lat: ${place.latitude}</span>
-                </div>
-                <div class="col-6">
-                    <i class="fas fa-compass me-1"></i>
-                    <span>Lng: ${place.longitude}</span>
-                </div>
-            </div>
-        </div>
-    `;
-    $('#postal-result').html(html);
+/**
+ * Update statistics cards
+ * @param {Array} flights - Flight data array
+ */
+function updateStatistics(flights) {
+    // Total flights
+    $('#totalFlights').text(flights.length);
+    $('#flightCount').text(`${flights.length} vols`);
+    
+    // Unique countries
+    const countries = [...new Set(flights.map(f => f.country))];
+    $('#totalCountries').text(countries.length);
+    
+    // Average altitude
+    const altitudes = flights.filter(f => f.altitude > 0).map(f => f.altitude);
+    const avgAlt = altitudes.length > 0 ? Math.round(altitudes.reduce((a, b) => a + b, 0) / altitudes.length) : 0;
+    $('#avgAltitude').text(`${avgAlt} m`);
+    
+    // Average velocity
+    const velocities = flights.filter(f => f.velocity > 0).map(f => f.velocity);
+    const avgVel = velocities.length > 0 ? Math.round(velocities.reduce((a, b) => a + b, 0) / velocities.length) : 0;
+    $('#avgVelocity').text(`${avgVel} m/s`);
 }
 
-function addToRecentSearches(country, code, data) {
-    const place = data.places[0];
-    recentSearches.unshift({
-        country: data.country,
-        code: code,
-        place: place['place name']
-    });
-    
-    if (recentSearches.length > 5) {
-        recentSearches.pop();
+/**
+ * Initialize or update DataTable
+ * @param {Array} flights - Flight data array
+ */
+function initializeDataTable(flights) {
+    // Destroy existing table if it exists
+    if (flightsTable) {
+        flightsTable.destroy();
+        $('#flightsTable tbody').empty();
     }
     
-    let html = '<ul class="list-group list-group-flush">';
-    recentSearches.forEach((search, index) => {
-        html += `
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>
-                    <i class="fas fa-map-pin text-primary me-2"></i>
-                    ${search.place}
-                </span>
-                <span class="badge bg-primary">${search.code}</span>
-            </li>
-        `;
+    // Initialize DataTable
+    flightsTable = $('#flightsTable').DataTable({
+        data: flights,
+        columns: [
+            { data: 'callsign' },
+            { 
+                data: 'departure',
+                render: function(data) {
+                    if (data && data.code) {
+                        return `<span class="badge bg-success"><i class="fas fa-plane-departure me-1"></i>${data.code}</span><br><small class="text-muted">${data.city}</small>`;
+                    }
+                    return 'N/A';
+                }
+            },
+            { 
+                data: 'destination',
+                render: function(data) {
+                    if (data && data.code) {
+                        return `<span class="badge bg-primary"><i class="fas fa-plane-arrival me-1"></i>${data.code}</span><br><small class="text-muted">${data.city}</small>`;
+                    }
+                    return 'N/A';
+                }
+            },
+            { data: 'country' },
+            { 
+                data: 'altitude',
+                render: function(data) {
+                    return data.toLocaleString() + ' m';
+                }
+            },
+            { 
+                data: 'velocity',
+                render: function(data) {
+                    return data.toLocaleString() + ' m/s';
+                }
+            },
+            {
+                data: null,
+                orderable: false,
+                render: function(data, type, row) {
+                    return `<button class="btn btn-sm btn-primary select-flight" data-callsign="${row.callsign}" data-country="${row.country}">
+                                <i class="fas fa-eye"></i>
+                            </button>`;
+                }
+            }
+        ],
+        language: {
+            search: "Rechercher :",
+            lengthMenu: "Afficher _MENU_ vols",
+            info: "Affichage de _START_ à _END_ sur _TOTAL_ vols",
+            infoEmpty: "Aucun vol disponible",
+            infoFiltered: "(filtré sur _MAX_ vols)",
+            paginate: {
+                first: "Premier",
+                last: "Dernier",
+                next: "Suivant",
+                previous: "Précédent"
+            },
+            zeroRecords: "Aucun vol trouvé",
+            emptyTable: "Aucune donnée disponible"
+        },
+        pageLength: 10,
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Tous"]],
+        order: [[0, 'asc']],
+        responsive: true
     });
-    html += '</ul>';
     
-    $('#recent-searches').html(html);
+    // Row click handler for selection
+    $('#flightsTable tbody').on('click', 'tr', function() {
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+            $('#flightDetails').hide();
+        } else {
+            flightsTable.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+            
+            const data = flightsTable.row(this).data();
+            showFlightDetails(data);
+        }
+    });
+    
+    // Button click handler
+    $('#flightsTable tbody').on('click', '.select-flight', function(e) {
+        e.stopPropagation();
+        const row = $(this).closest('tr');
+        row.click();
+    });
+}
+
+/**
+ * Show flight details panel
+ * @param {Object} flight - Flight data object
+ */
+function showFlightDetails(flight) {
+    // Basic info
+    $('#detailCallsign').text(flight.callsign);
+    $('#detailCountry').text(flight.country);
+    $('#detailPosition').text(`${flight.latitude}, ${flight.longitude}`);
+    $('#detailAltitude').text(`${flight.altitude.toLocaleString()} m`);
+    $('#detailVelocity').text(`${flight.velocity.toLocaleString()} m/s`);
+    $('#detailHeading').text(`${flight.heading}°`);
+    
+    // Departure info
+    if (flight.departure) {
+        $('#detailDepartureCode').text(flight.departure.code);
+        $('#detailDepartureCity').text(flight.departure.city);
+        $('#detailDepartureCountry').text(flight.departure.country);
+    } else {
+        $('#detailDepartureCode').text('---');
+        $('#detailDepartureCity').text('N/A');
+        $('#detailDepartureCountry').text('');
+    }
+    
+    // Destination info
+    if (flight.destination) {
+        $('#detailDestinationCode').text(flight.destination.code);
+        $('#detailDestinationCity').text(flight.destination.city);
+        $('#detailDestinationCountry').text(flight.destination.country);
+    } else {
+        $('#detailDestinationCode').text('---');
+        $('#detailDestinationCity').text('N/A');
+        $('#detailDestinationCountry').text('');
+    }
+    
+    // Flight callsign in route display
+    $('#detailFlightCallsign').text(`Vol ${flight.callsign}`);
+    
+    // Store selected flight data for passengers page
+    localStorage.setItem('selectedFlight', JSON.stringify(flight));
+    
+    // Show details panel with animation
+    $('#flightDetails').slideDown();
+    
+    // Scroll to details
+    $('html, body').animate({
+        scrollTop: $('#flightDetails').offset().top - 100
+    }, 500);
+}
+
+/**
+ * Initialize Chart.js charts
+ * @param {Array} flights - Flight data array
+ */
+function initializeCharts(flights) {
+    // Prepare data for country pie chart
+    const countryCounts = {};
+    flights.forEach(flight => {
+        countryCounts[flight.country] = (countryCounts[flight.country] || 0) + 1;
+    });
+    
+    // Sort and get top 10 countries
+    const sortedCountries = Object.entries(countryCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10);
+    
+    const countryLabels = sortedCountries.map(c => c[0]);
+    const countryData = sortedCountries.map(c => c[1]);
+    
+    // Destroy existing charts
+    if (countryPieChart) countryPieChart.destroy();
+    if (altitudeBarChart) altitudeBarChart.destroy();
+    
+    // Country Pie Chart
+    const pieCtx = document.getElementById('countryPieChart').getContext('2d');
+    countryPieChart = new Chart(pieCtx, {
+        type: 'doughnut',
+        data: {
+            labels: countryLabels,
+            datasets: [{
+                data: countryData,
+                backgroundColor: [
+                    '#0d6efd', '#198754', '#ffc107', '#dc3545', '#0dcaf0',
+                    '#6f42c1', '#fd7e14', '#20c997', '#6c757d', '#d63384'
+                ],
+                borderWidth: 2,
+                borderColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        boxWidth: 12,
+                        padding: 8,
+                        font: { size: 10 }
+                    }
+                },
+                title: {
+                    display: false
+                }
+            }
+        }
+    });
+    
+    // Prepare data for altitude distribution
+    const altitudeRanges = {
+        '0-2000m': 0,
+        '2000-4000m': 0,
+        '4000-6000m': 0,
+        '6000-8000m': 0,
+        '8000-10000m': 0,
+        '10000m+': 0
+    };
+    
+    flights.forEach(flight => {
+        const alt = flight.altitude;
+        if (alt < 2000) altitudeRanges['0-2000m']++;
+        else if (alt < 4000) altitudeRanges['2000-4000m']++;
+        else if (alt < 6000) altitudeRanges['4000-6000m']++;
+        else if (alt < 8000) altitudeRanges['6000-8000m']++;
+        else if (alt < 10000) altitudeRanges['8000-10000m']++;
+        else altitudeRanges['10000m+']++;
+    });
+    
+    // Altitude Bar Chart
+    const barCtx = document.getElementById('altitudeBarChart').getContext('2d');
+    altitudeBarChart = new Chart(barCtx, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(altitudeRanges),
+            datasets: [{
+                label: 'Nombre de vols',
+                data: Object.values(altitudeRanges),
+                backgroundColor: [
+                    'rgba(13, 110, 253, 0.7)',
+                    'rgba(25, 135, 84, 0.7)',
+                    'rgba(255, 193, 7, 0.7)',
+                    'rgba(220, 53, 69, 0.7)',
+                    'rgba(13, 202, 240, 0.7)',
+                    'rgba(111, 66, 193, 0.7)'
+                ],
+                borderColor: [
+                    '#0d6efd', '#198754', '#ffc107', '#dc3545', '#0dcaf0', '#6f42c1'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 5
+                    }
+                },
+                x: {
+                    ticks: {
+                        font: { size: 9 }
+                    }
+                }
+            }
+        }
+    });
+}
+
+/**
+ * Show error message
+ * @param {string} message - Error message
+ */
+function showError(message) {
+    $('#loadingIndicator').addClass('d-none');
+    $('#errorText').text(message);
+    $('#errorMessage').removeClass('d-none');
+}
+
+/**
+ * Show info alert about demo data
+ */
+function showInfoAlert() {
+    // Désactivé - ne pas afficher l'alerte de démonstration
+    return;
+    if ($('#demoAlert').length === 0) {
+        const alertHtml = `
+            <div id="demoAlert" class="alert alert-info alert-dismissible fade show mb-3" role="alert">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>Mode démonstration :</strong> Les données affichées sont générées localement car l'API OpenSky Network n'est pas accessible (CORS ou connexion).
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        `;
+        $('#dashboardContent').prepend(alertHtml);
+    }
 }

@@ -3,22 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataDash - Tableau de Bord Dynamique</title>
+    <title>Flight & Passengers Tracker - Accueil</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="index.html">
-                <i class="fas fa-chart-line me-2"></i>DataDash
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-plane-departure me-2"></i>Flight Tracker
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -29,61 +27,60 @@
                         <a class="nav-link active" href="index.html"><i class="fas fa-home me-1"></i>Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="pages/dashboard.html"><i class="fas fa-tachometer-alt me-1"></i>Dashboard</a>
+                        <a class="nav-link" href="about.html"><i class="fas fa-info-circle me-1"></i>À propos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="pages/statistiques.html"><i class="fas fa-chart-bar me-1"></i>Statistiques</a>
+                        <a class="nav-link" href="dashboard.html"><i class="fas fa-tachometer-alt me-1"></i>Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="pages/apropos.html"><i class="fas fa-info-circle me-1"></i>À propos</a>
+                        <a class="nav-link" href="passengers.html"><i class="fas fa-users me-1"></i>Passagers</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="pages/contact.html"><i class="fas fa-envelope me-1"></i>Contact</a>
+                        <a class="nav-link" href="contact.html"><i class="fas fa-envelope me-1"></i>Contact</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <header class="hero-section">
-        <div class="hero-overlay"></div>
-        <div class="container hero-content">
-            <div class="row align-items-center min-vh-100">
-                <div class="col-lg-6">
-                    <h1 class="display-3 fw-bold text-white mb-4 animate-fade-in">
-                        Tableau de Bord <span class="text-warning">Dynamique</span>
+    <!-- Header / Hero Section -->
+    <header class="hero-section travel-bg">
+        <div class="cloud-decoration" style="top: 20%; left: 10%;"></div>
+        <div class="cloud-decoration" style="top: 40%; right: 15%;"></div>
+        <div class="container">
+            <div class="row align-items-center min-vh-75">
+                <div class="col-lg-6 page-transition">
+                    <div class="live-indicator mb-3">
+                        <span class="dot"></span>
+                        <span class="badge bg-danger">EN DIRECT</span>
+                    </div>
+                    <h1 class="display-4 fw-bold text-white mb-4">
+                        <i class="fas fa-plane text-warning"></i> Flight & Passengers Tracker
                     </h1>
                     <p class="lead text-white-50 mb-4">
-                        Explorez des données en temps réel provenant d'APIs publiques. 
-                        Météo, utilisateurs, films, produits alimentaires et plus encore !
+                        Suivez les avions en temps réel, découvrez les passagers à bord et explorez les destinations du monde entier.
                     </p>
+                    
+                    <!-- Flight Route Visual -->
+                    <div class="flight-route-line mb-4">
+                        <span class="departure text-white">🛫 Départ</span>
+                        <span class="arrival text-white">Arrivée 🛬</span>
+                    </div>
+                    
                     <div class="d-flex gap-3 flex-wrap">
-                        <a href="pages/dashboard.html" class="btn btn-warning btn-lg px-4 py-2">
-                            <i class="fas fa-rocket me-2"></i>Explorer le Dashboard
+                        <a href="dashboard.html" class="btn btn-warning btn-lg">
+                            <i class="fas fa-rocket me-2"></i>Commencer
                         </a>
-                        <a href="pages/apropos.html" class="btn btn-outline-light btn-lg px-4 py-2">
-                            <i class="fas fa-info-circle me-2"></i>En savoir plus
+                        <a href="about.html" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-book me-2"></i>En savoir plus
                         </a>
                     </div>
                 </div>
-                <div class="col-lg-6 d-none d-lg-block">
-                    <div class="hero-illustration">
-                        <div class="floating-card card-1">
-                            <i class="fas fa-cloud-sun fa-2x text-warning"></i>
-                            <span>Météo</span>
-                        </div>
-                        <div class="floating-card card-2">
-                            <i class="fas fa-users fa-2x text-info"></i>
-                            <span>Utilisateurs</span>
-                        </div>
-                        <div class="floating-card card-3">
-                            <i class="fas fa-film fa-2x text-danger"></i>
-                            <span>Films</span>
-                        </div>
-                        <div class="floating-card card-4">
-                            <i class="fas fa-globe fa-2x text-success"></i>
-                            <span>Pays</span>
+                <div class="col-lg-6 text-center page-transition">
+                    <div class="hero-image position-relative">
+                        <img src="images/flight/airplane-main.jpeg" alt="Avion en vol" class="img-fluid rounded shadow" style="max-height: 400px;">
+                        <div class="flight-status in-flight position-absolute" style="bottom: 20px; left: 20px;">
+                            <i class="fas fa-plane"></i> Vol en cours
                         </div>
                     </div>
                 </div>
@@ -91,143 +88,60 @@
         </div>
     </header>
 
+  
     <!-- Features Section -->
-    <section class="py-5 bg-light" id="features">
+    <section class="py-5 bg-white section-plane-trail">
         <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold">Fonctionnalités Principales</h2>
-                <p class="text-muted">Découvrez ce que notre tableau de bord peut faire pour vous</p>
+            <div class="text-center mb-5 page-transition">
+                <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill mb-3">
+                    <i class="fas fa-star me-1"></i>Fonctionnalités
+                </span>
+                <h2 class="fw-bold display-6">Pourquoi Choisir Flight Tracker ?</h2>
+                <p class="text-muted lead">Des outils puissants pour suivre vos vols en temps réel</p>
             </div>
             <div class="row g-4">
-                <div class="col-md-6 col-lg-3">
-                    <div class="feature-card text-center p-4 h-100">
-                        <div class="feature-icon bg-primary text-white rounded-circle mb-3 mx-auto">
-                            <i class="fas fa-database"></i>
-                        </div>
-                        <h5>APIs Multiples</h5>
-                        <p class="text-muted small">Intégration de plusieurs APIs publiques pour des données variées et riches</p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="feature-card text-center p-4 h-100">
-                        <div class="feature-icon bg-success text-white rounded-circle mb-3 mx-auto">
-                            <i class="fas fa-chart-pie"></i>
-                        </div>
-                        <h5>Visualisation</h5>
-                        <p class="text-muted small">Graphiques interactifs avec Chart.js pour une analyse visuelle efficace</p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="feature-card text-center p-4 h-100">
-                        <div class="feature-icon bg-warning text-white rounded-circle mb-3 mx-auto">
-                            <i class="fas fa-table"></i>
-                        </div>
-                        <h5>DataTables</h5>
-                        <p class="text-muted small">Tableaux interactifs avec recherche, tri et pagination intégrés</p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="feature-card text-center p-4 h-100">
-                        <div class="feature-icon bg-danger text-white rounded-circle mb-3 mx-auto">
-                            <i class="fas fa-mobile-alt"></i>
-                        </div>
-                        <h5>Responsive</h5>
-                        <p class="text-muted small">Interface adaptative pour tous les écrans grâce à Bootstrap 5</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- APIs Section -->
-    <section class="py-5" id="apis">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold">APIs Publiques Utilisées</h2>
-                <p class="text-muted">Des sources de données fiables et gratuites</p>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-4">
-                    <div class="api-card card h-100 border-0 shadow-sm">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="api-icon bg-info bg-opacity-10 text-info rounded p-3 me-3">
-                                    <i class="fas fa-cloud-sun fa-lg"></i>
-                                </div>
-                                <h5 class="mb-0">OpenWeatherMap</h5>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm feature-card">
+                        <img src="images/flight/tunisair-boeing-1.jpeg" class="card-img-top" alt="Suivi de vol" style="height: 200px; object-fit: cover;">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon bg-primary text-white rounded-circle mb-3 mx-auto">
+                                <i class="fas fa-plane fa-2x"></i>
                             </div>
-                            <p class="text-muted small">Données météorologiques en temps réel : température, humidité, conditions climatiques.</p>
-                            <span class="badge bg-info">Météo</span>
+                            <h5 class="card-title">Suivi en Temps Réel</h5>
+                            <p class="card-text text-muted">
+                                Suivez les avions actuellement en vol grâce à l'API OpenSky Network avec des données mises à jour en temps réel.
+                            </p>
+                            <span class="flight-status on-time"><i class="fas fa-check-circle"></i> Disponible</span>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="api-card card h-100 border-0 shadow-sm">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="api-icon bg-success bg-opacity-10 text-success rounded p-3 me-3">
-                                    <i class="fas fa-users fa-lg"></i>
-                                </div>
-                                <h5 class="mb-0">RandomUser</h5>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm feature-card">
+                        <img src="images/flight/flight-attendants-1.jpeg" class="card-img-top" alt="Passagers" style="height: 200px; object-fit: cover;">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon bg-success text-white rounded-circle mb-3 mx-auto">
+                                <i class="fas fa-users fa-2x"></i>
                             </div>
-                            <p class="text-muted small">Génération de profils utilisateurs fictifs pour affichage dans des tableaux interactifs.</p>
-                            <span class="badge bg-success">Utilisateurs</span>
+                            <h5 class="card-title">Passagers Simulés</h5>
+                            <p class="card-text text-muted">
+                                Visualisez les passagers fictifs générés par RandomUser pour chaque vol sélectionné.
+                            </p>
+                            <span class="flight-status on-time"><i class="fas fa-check-circle"></i> Actif</span>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="api-card card h-100 border-0 shadow-sm">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="api-icon bg-warning bg-opacity-10 text-warning rounded p-3 me-3">
-                                    <i class="fas fa-film fa-lg"></i>
-                                </div>
-                                <h5 class="mb-0">TMDB</h5>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm feature-card">
+                        <img src="images/flight/flight-route.jpeg" class="card-img-top" alt="Destinations" style="height: 200px; object-fit: cover;">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon bg-info text-white rounded-circle mb-3 mx-auto">
+                                <i class="fas fa-globe fa-2x"></i>
                             </div>
-                            <p class="text-muted small">Base de données de films : titres, genres, notes et informations détaillées.</p>
-                            <span class="badge bg-warning">Films</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="api-card card h-100 border-0 shadow-sm">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="api-icon bg-danger bg-opacity-10 text-danger rounded p-3 me-3">
-                                    <i class="fas fa-apple-alt fa-lg"></i>
-                                </div>
-                                <h5 class="mb-0">Open Food Facts</h5>
-                            </div>
-                            <p class="text-muted small">Informations sur les produits alimentaires : catégories et scores nutritionnels.</p>
-                            <span class="badge bg-danger">Alimentation</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="api-card card h-100 border-0 shadow-sm">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="api-icon bg-primary bg-opacity-10 text-primary rounded p-3 me-3">
-                                    <i class="fas fa-flag fa-lg"></i>
-                                </div>
-                                <h5 class="mb-0">REST Countries</h5>
-                            </div>
-                            <p class="text-muted small">Informations détaillées sur les pays du monde avec leurs drapeaux.</p>
-                            <span class="badge bg-primary">Pays</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="api-card card h-100 border-0 shadow-sm">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="api-icon bg-secondary bg-opacity-10 text-secondary rounded p-3 me-3">
-                                    <i class="fas fa-map-marker-alt fa-lg"></i>
-                                </div>
-                                <h5 class="mb-0">Zippopotam</h5>
-                            </div>
-                            <p class="text-muted small">Informations géographiques basées sur les codes postaux.</p>
-                            <span class="badge bg-secondary">Géolocalisation</span>
+                            <h5 class="card-title">Infos Destination</h5>
+                            <p class="card-text text-muted">
+                                Découvrez les informations détaillées du pays de destination via CountryLayer API.
+                            </p>
+                            <span class="flight-status in-flight"><i class="fas fa-globe"></i> Mondial</span>
                         </div>
                     </div>
                 </div>
@@ -235,59 +149,49 @@
         </div>
     </section>
 
-    <!-- Quick Preview Section -->
-    <section class="py-5 bg-light" id="preview">
+  
+
+    <!-- Popular Destinations -->
+    <section class="py-5 bg-light">
         <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold">Aperçu Rapide</h2>
-                <p class="text-muted">Un avant-goût des données disponibles</p>
+            <div class="text-center mb-5 page-transition">
+                <span class="badge bg-success bg-opacity-15 text-success px-3 py-2 rounded-pill mb-3">
+                    <i class="fas fa-map-marked-alt me-1"></i>Destinations
+                </span>
+                <h2 class="fw-bold display-6">Destinations Populaires</h2>
+                <p class="text-muted">Explorez les destinations les plus suivies sur notre plateforme</p>
             </div>
             <div class="row g-4">
-                <!-- Weather Widget -->
-                <div class="col-lg-4">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-header bg-info text-white">
-                            <i class="fas fa-cloud-sun me-2"></i>Météo Actuelle
-                        </div>
-                        <div class="card-body" id="weather-widget">
-                            <div class="text-center py-4">
-                                <div class="spinner-border text-info" role="status">
-                                    <span class="visually-hidden">Chargement...</span>
-                                </div>
-                                <p class="text-muted mt-2">Chargement des données météo...</p>
-                            </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="destination-card">
+                        <img src="images/flight/airplane-sky-2.jpeg" alt="Europe">
+                        <div class="overlay">
+                            <span class="badge bg-warning text-dark mb-2">🇪🇺 Europe</span>
+                            <h4>Paris, Londres, Rome</h4>
+                            <p>+2,500 vols quotidiens</p>
+                            <span class="flight-status on-time"><i class="fas fa-plane"></i> Très fréquenté</span>
                         </div>
                     </div>
                 </div>
-                <!-- Random User Widget -->
-                <div class="col-lg-4">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-header bg-success text-white">
-                            <i class="fas fa-user me-2"></i>Utilisateur Aléatoire
-                        </div>
-                        <div class="card-body" id="user-widget">
-                            <div class="text-center py-4">
-                                <div class="spinner-border text-success" role="status">
-                                    <span class="visually-hidden">Chargement...</span>
-                                </div>
-                                <p class="text-muted mt-2">Chargement du profil...</p>
-                            </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="destination-card">
+                        <img src="images/flight/airplane-sky-3.jpeg" alt="Moyen-Orient">
+                        <div class="overlay">
+                            <span class="badge bg-info text-dark mb-2">🌍 Moyen-Orient</span>
+                            <h4>Dubai, Doha, Ryad</h4>
+                            <p>+1,800 vols quotidiens</p>
+                            <span class="flight-status in-flight"><i class="fas fa-star"></i> Populaire</span>
                         </div>
                     </div>
                 </div>
-                <!-- Country Widget -->
-                <div class="col-lg-4">
-                    <div class="card border-0 shadow-sm h-100">
-                        <div class="card-header bg-primary text-white">
-                            <i class="fas fa-globe me-2"></i>Pays Aléatoire
-                        </div>
-                        <div class="card-body" id="country-widget">
-                            <div class="text-center py-4">
-                                <div class="spinner-border text-primary" role="status">
-                                    <span class="visually-hidden">Chargement...</span>
-                                </div>
-                                <p class="text-muted mt-2">Chargement du pays...</p>
-                            </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="destination-card">
+                        <img src="images/flight/airplane-sky-4.jpeg" alt="Afrique">
+                        <div class="overlay">
+                            <span class="badge bg-success mb-2">🌍 Afrique</span>
+                            <h4>Tunis, Casablanca, Le Caire</h4>
+                            <p>+1,200 vols quotidiens</p>
+                            <span class="flight-status on-time"><i class="fas fa-heart"></i> Recommandé</span>
                         </div>
                     </div>
                 </div>
@@ -295,55 +199,230 @@
         </div>
     </section>
 
-    <!-- Call to Action -->
-    <section class="py-5 bg-primary text-white">
-        <div class="container text-center">
-            <h2 class="fw-bold mb-3">Prêt à Explorer ?</h2>
-            <p class="lead mb-4">Découvrez toutes les fonctionnalités de notre tableau de bord interactif</p>
-            <a href="pages/dashboard.html" class="btn btn-warning btn-lg px-5">
-                <i class="fas fa-arrow-right me-2"></i>Accéder au Dashboard
-            </a>
+
+    
+
+  <!-- Photo Slider / Carousel -->
+    <section class="py-5" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);">
+        <div class="container">
+            <div class="text-center mb-4 page-transition">
+                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill mb-3">
+                    <i class="fas fa-images me-1"></i>Galerie
+                </span>
+                <h2 class="fw-bold text-white">Notre Galerie</h2>
+                <p class="text-white-50">Découvrez notre collection d'images aériennes</p>
+            </div>
+            <div id="photoCarousel" class="carousel slide" data-bs-ride="carousel">
+                <!-- Indicators -->
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#photoCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#photoCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#photoCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#photoCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#photoCarousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                </div>
+                <!-- Carousel Items -->
+                <div class="carousel-inner rounded shadow-lg">
+                    <div class="carousel-item active">
+                        <img src="images/flight/tunisair-fleet.jpeg" class="d-block w-100" alt="Flotte Tunisair" style="height: 500px; object-fit: cover;">
+                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+                            <h5><i class="fas fa-plane me-2"></i>Flotte Tunisair</h5>
+                            <p>Notre partenaire national pour vos voyages</p>
+                            <span class="flight-status on-time"><i class="fas fa-check-circle"></i> Disponible</span>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="images/flight/airplane-sky-1.jpeg" class="d-block w-100" alt="Avion dans le ciel" style="height: 500px; object-fit: cover;">
+                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+                            <h5><i class="fas fa-cloud me-2"></i>Vol en Altitude</h5>
+                            <p>Au-dessus des nuages vers votre destination</p>
+                            <span class="flight-status in-flight"><i class="fas fa-plane"></i> En vol</span>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="images/flight/tunisair-boeing-1.jpeg" class="d-block w-100" alt="Boeing Tunisair" style="height: 500px; object-fit: cover;">
+                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+                            <h5><i class="fas fa-plane-departure me-2"></i>Boeing Moderne</h5>
+                            <p>Technologie de pointe pour votre confort</p>
+                            <span class="flight-status on-time"><i class="fas fa-star"></i> Premium</span>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="images/flight/crew-pilots.jpeg" class="d-block w-100" alt="Équipage" style="height: 500px; object-fit: cover;">
+                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+                            <h5><i class="fas fa-users me-2"></i>Notre Équipage</h5>
+                            <p>Des professionnels à votre service</p>
+                            <span class="flight-status on-time"><i class="fas fa-award"></i> Certifié</span>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="images/flight/porter-airlines.jpeg" class="d-block w-100" alt="Porter Airlines" style="height: 500px; object-fit: cover;">
+                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+                            <h5><i class="fas fa-globe me-2"></i>Nos Partenaires</h5>
+                            <p>Un réseau mondial de compagnies aériennes</p>
+                            <span class="flight-status in-flight"><i class="fas fa-handshake"></i> Partenaire</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Navigation Arrows -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#photoCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Précédent</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#photoCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Suivant</span>
+                </button>
+            </div>
         </div>
     </section>
+
+
+
+      <!-- Travel Stats Section -->
+    <section class="py-5 world-map-bg">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="badge bg-info bg-opacity-25 text-info px-3 py-2 rounded-pill mb-3">
+                    <i class="fas fa-chart-line me-1"></i>Statistiques
+                </span>
+                <h2 class="fw-bold display-6 text-white">Nos Chiffres Clés</h2>
+                <p class="text-white-50">Des milliers de vols suivis chaque jour</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-3 col-6">
+                    <div class="travel-counter">
+                        <div class="counter-icon">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <h2>10K+</h2>
+                        <p>Vols Suivis</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="travel-counter">
+                        <div class="counter-icon" style="background: linear-gradient(135deg, #198754 0%, #20c997 100%);">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h2 style="color: #198754;">50K+</h2>
+                        <p>Passagers</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="travel-counter">
+                        <div class="counter-icon" style="background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);">
+                            <i class="fas fa-globe-americas"></i>
+                        </div>
+                        <h2 style="color: #ffc107;">195</h2>
+                        <p>Pays Couverts</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="travel-counter">
+                        <div class="counter-icon" style="background: linear-gradient(135deg, #dc3545 0%, #ff6b6b 100%);">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h2 style="color: #dc3545;">24/7</h2>
+                        <p>Disponibilité</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+  
+
+  
+    <!-- Call to Action Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="boarding-pass">
+                        <div class="row align-items-center">
+                            <div class="col-lg-8 text-center text-lg-start mb-4 mb-lg-0">
+                                <span class="badge bg-warning text-dark mb-2">
+                                    <i class="fas fa-ticket-alt me-1"></i> BOARDING PASS
+                                </span>
+                                <h3 class="text-white fw-bold mb-2">Prêt à Explorer le Ciel ?</h3>
+                                <p class="text-white-50 mb-0">Commencez dès maintenant à suivre les vols en temps réel et découvrez notre dashboard interactif.</p>
+                            </div>
+                            <div class="col-lg-4 text-center text-lg-end">
+                                <a href="dashboard.html" class="btn btn-warning btn-lg px-4">
+                                    <i class="fas fa-rocket me-2"></i>Démarrer
+                                </a>
+                            </div>
+                        </div>
+                        <div class="barcode mt-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+  
 
     <!-- Footer -->
-    <footer class="bg-dark text-white py-4">
+    <footer class="py-5" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);">
         <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5><i class="fas fa-chart-line me-2"></i>DataDash</h5>
-                    <p class="text-muted small">Tableau de bord dynamique basé sur des APIs publiques. Projet éducatif démontrant l'utilisation de technologies web modernes.</p>
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h5 class="text-white fw-bold mb-3"><i class="fas fa-plane-departure me-2 text-warning"></i>Flight Tracker</h5>
+                    <p class="text-white-50">Votre partenaire de confiance pour le suivi des vols en temps réel et la gestion des voyages.</p>
+                    <div class="d-flex gap-3">
+                        <a href="https://www.facebook.com/wasl.alsalh.2025/" class="text-white-50 fs-5" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="https://github.com/wasselessalah" class="text-white-50 fs-5" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="https://www.instagram.com/essalahwassel/" class="text-white-50 fs-5" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.linkedin.com/in/essalah-wassel-626993300/" class="text-white-50 fs-5" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <h6>Navigation</h6>
-                    <ul class="list-unstyled small">
-                        <li><a href="index.html" class="text-muted">Accueil</a></li>
-                        <li><a href="pages/dashboard.html" class="text-muted">Dashboard</a></li>
-                        <li><a href="pages/statistiques.html" class="text-muted">Statistiques</a></li>
-                        <li><a href="pages/apropos.html" class="text-muted">À propos</a></li>
+                <div class="col-lg-2 col-md-4">
+                    <h6 class="text-white fw-bold mb-3">Navigation</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="index.html" class="text-white-50"><i class="fas fa-chevron-right me-2 small"></i>Accueil</a></li>
+                        <li class="mb-2"><a href="about.html" class="text-white-50"><i class="fas fa-chevron-right me-2 small"></i>À propos</a></li>
+                        <li class="mb-2"><a href="dashboard.html" class="text-white-50"><i class="fas fa-chevron-right me-2 small"></i>Dashboard</a></li>
+                        <li class="mb-2"><a href="contact.html" class="text-white-50"><i class="fas fa-chevron-right me-2 small"></i>Contact</a></li>
                     </ul>
                 </div>
-                <div class="col-md-3">
-                    <h6>Technologies</h6>
-                    <ul class="list-unstyled small text-muted">
-                        <li>HTML5 & CSS3</li>
-                        <li>Bootstrap 5</li>
-                        <li>JavaScript & jQuery</li>
-                        <li>Chart.js & DataTables</li>
+                <div class="col-lg-3 col-md-4">
+                    <h6 class="text-white fw-bold mb-3">Contact</h6>
+                    <ul class="list-unstyled text-white-50">
+                        <li class="mb-2"><i class="fas fa-envelope me-2 text-warning"></i>wasselessalah0@gmail.com</li>
+                        <li class="mb-2"><i class="fas fa-phone me-2 text-warning"></i>+216 22 107 735</li>
+                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2 text-warning"></i>Sousse, Tunisie</li>
                     </ul>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <h6 class="text-white fw-bold mb-3">Technologies</h6>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge bg-primary">HTML5</span>
+                        <span class="badge bg-info">CSS3</span>
+                        <span class="badge bg-purple" style="background:#7952b3">Bootstrap</span>
+                        <span class="badge bg-warning text-dark">jQuery</span>
+                        <span class="badge bg-success">AJAX</span>
+                        <span class="badge bg-danger">Chart.js</span>
+                    </div>
                 </div>
             </div>
-            <hr class="my-3">
-            <div class="text-center small text-muted">
-                <p class="mb-0">&copy; 2025 DataDash - Mini-Projet Avancé. Tous droits réservés.</p>
+            <hr class="my-4 border-secondary">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="text-white-50 mb-0 small">&copy; 2025 Flight Tracker. Tous droits réservés.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="text-white-50 mb-0 small">Projet Académique - Développé avec ❤️</p>
+                </div>
             </div>
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Custom JS -->
     <script src="js/main.js"></script>
-    <script src="js/home.js"></script>
 </body>
 </html>
