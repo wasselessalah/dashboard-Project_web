@@ -1,10 +1,3 @@
-/**
- * Flight & Passengers Tracker
- * Dashboard JavaScript File
- * Handles flight data fetching, DataTables, and Chart.js visualizations
- */
-
-// Global variables
 let flightsData = [];
 let flightsTable = null;
 let countryPieChart = null;
@@ -25,9 +18,6 @@ $(document).ready(function() {
     });
 });
 
-/**
- * Load flight data from OpenSky Network API
- */
 function loadFlightData() {
     // Show loading indicator
     $('#loadingIndicator').removeClass('d-none');
@@ -89,9 +79,6 @@ function loadFlightData() {
     });
 }
 
-/**
- * Load demo data when API fails
- */
 function loadDemoData() {
     console.log('Loading demo data...');
     
@@ -116,11 +103,6 @@ function loadDemoData() {
     showInfoAlert();
 }
 
-/**
- * Generate demo flight data
- * @param {number} count - Number of flights to generate
- * @returns {Array} Array of flight objects
- */
 function generateDemoFlights(count) {
     const countries = ['France', 'United States', 'Germany', 'United Kingdom', 'Spain', 
                        'Italy', 'Netherlands', 'Belgium', 'Switzerland', 'Canada',
@@ -176,18 +158,10 @@ function generateDemoFlights(count) {
     return flights;
 }
 
-/**
- * Generate random flight ID
- */
 function generateRandomId() {
     return Math.random().toString(36).substring(2, 8).toUpperCase();
 }
 
-/**
- * Process raw flight data from API
- * @param {Array} states - Raw states array from API
- * @returns {Array} Processed flight data
- */
 function processFlightData(states) {
     // Airports for simulated departure/destination
     const airports = [
@@ -233,10 +207,6 @@ function processFlightData(states) {
         });
 }
 
-/**
- * Update statistics cards
- * @param {Array} flights - Flight data array
- */
 function updateStatistics(flights) {
     // Total flights
     $('#totalFlights').text(flights.length);
@@ -257,10 +227,6 @@ function updateStatistics(flights) {
     $('#avgVelocity').text(`${avgVel} m/s`);
 }
 
-/**
- * Initialize or update DataTable
- * @param {Array} flights - Flight data array
- */
 function initializeDataTable(flights) {
     // Destroy existing table if it exists
     if (flightsTable) {
@@ -357,10 +323,6 @@ function initializeDataTable(flights) {
     });
 }
 
-/**
- * Show flight details panel
- * @param {Object} flight - Flight data object
- */
 function showFlightDetails(flight) {
     // Basic info
     $('#detailCallsign').text(flight.callsign);
@@ -407,10 +369,6 @@ function showFlightDetails(flight) {
     }, 500);
 }
 
-/**
- * Initialize Chart.js charts
- * @param {Array} flights - Flight data array
- */
 function initializeCharts(flights) {
     // Prepare data for country pie chart
     const countryCounts = {};
@@ -533,21 +491,13 @@ function initializeCharts(flights) {
     });
 }
 
-/**
- * Show error message
- * @param {string} message - Error message
- */
 function showError(message) {
     $('#loadingIndicator').addClass('d-none');
     $('#errorText').text(message);
     $('#errorMessage').removeClass('d-none');
 }
 
-/**
- * Show info alert about demo data
- */
 function showInfoAlert() {
-    // Désactivé - ne pas afficher l'alerte de démonstration
     return;
     if ($('#demoAlert').length === 0) {
         const alertHtml = `

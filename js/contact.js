@@ -1,9 +1,3 @@
-/**
- * Flight & Passengers Tracker
- * Contact Form JavaScript File
- * Handles form validation for Contact and Registration forms
- */
-
 $(document).ready(function() {
     console.log('Contact page initialized');
     
@@ -21,9 +15,6 @@ $(document).ready(function() {
     initCharCounter();
 });
 
-/**
- * Initialize contact form validation
- */
 function initContactForm() {
     const form = $('#contactForm');
     
@@ -120,9 +111,6 @@ function initContactForm() {
     });
 }
 
-/**
- * Initialize registration form validation
- */
 function initRegisterForm() {
     const form = $('#registerForm');
     
@@ -255,9 +243,6 @@ function initRegisterForm() {
     });
 }
 
-/**
- * Initialize password toggle visibility
- */
 function initPasswordToggle() {
     $('#togglePassword').on('click', function() {
         const passwordField = $('#registerPassword');
@@ -273,9 +258,6 @@ function initPasswordToggle() {
     });
 }
 
-/**
- * Initialize password strength indicator
- */
 function initPasswordStrength() {
     $('#registerPassword').on('input', function() {
         const password = $(this).val();
@@ -305,11 +287,6 @@ function initPasswordStrength() {
     });
 }
 
-/**
- * Calculate password strength
- * @param {string} password - Password to evaluate
- * @returns {number} Strength score (0-100)
- */
 function calculatePasswordStrength(password) {
     let strength = 0;
     
@@ -333,9 +310,6 @@ function calculatePasswordStrength(password) {
     return Math.min(strength, 100);
 }
 
-/**
- * Initialize character counter for message textarea
- */
 function initCharCounter() {
     $('#contactMessage').on('input', function() {
         const length = $(this).val().length;
@@ -349,39 +323,20 @@ function initCharCounter() {
     });
 }
 
-/**
- * Validate email format
- * @param {string} email - Email to validate
- * @returns {boolean} True if valid
- */
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 }
 
-/**
- * Show field error
- * @param {string} fieldSelector - Field selector
- * @param {string} errorSelector - Error message selector
- * @param {string} message - Error message
- */
 function showFieldError(fieldSelector, errorSelector, message) {
     $(fieldSelector).addClass('is-invalid').removeClass('is-valid');
     $(errorSelector).text(message).show();
 }
 
-/**
- * Show field success
- * @param {string} fieldSelector - Field selector
- */
 function showFieldSuccess(fieldSelector) {
     $(fieldSelector).addClass('is-valid').removeClass('is-invalid');
 }
 
-/**
- * Reset form validation
- * @param {jQuery} form - Form jQuery object
- */
 function resetValidation(form) {
     form.find('.form-control, .form-select, .form-check-input')
         .removeClass('is-valid is-invalid');

@@ -458,6 +458,7 @@ a {
     border: 2px solid transparent;
 }
 
+
 .tech-card:hover {
     border-color: var(--primary-color);
     transform: translateY(-5px);
@@ -1194,6 +1195,8 @@ table.dataTable tbody tr.selected {
     font-size: 0.8rem;
 }
 
+
+
 /* DataTables Customization for Dashboard */
 .dataTables_wrapper .dataTables_filter input {
     border-radius: var(--radius-md);
@@ -1202,12 +1205,64 @@ table.dataTable tbody tr.selected {
     transition: var(--transition);
     font-size: 0.9rem;
 }
-
-.dataTables_wrapper .dataTables_filter input:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15);
-    outline: none;
+/* Footer Pro - Simple */
+.footer-pro {
+    background: #212529;
+    color: #adb5bd;
+    padding: 3rem 0 1rem;
 }
+
+.footer-pro h5 {
+    color: white;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.footer-pro .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-pro .footer-links li {
+    margin-bottom: 0.75rem;
+}
+
+.footer-pro .footer-links a {
+    color: #adb5bd;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-pro .footer-links a:hover {
+    color: white;
+}
+
+.footer-pro .social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #343a40;
+    color: #adb5bd;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+}
+
+.footer-pro .social-links a:hover {
+    background: #0d6efd;
+    color: white;
+}
+
+.footer-pro .footer-bottom {
+    border-top: 1px solid #343a40;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+}
+
+
 
 .dataTables_wrapper .dataTables_paginate .paginate_button {
     border-radius: var(--radius-sm) !important;

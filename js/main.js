@@ -1,9 +1,3 @@
-/**
- * Flight & Passengers Tracker
- * Main JavaScript File
- * Handles common functionality across pages
- */
-
 $(document).ready(function() {
     console.log('Flight & Passengers Tracker - Initialized');
     
@@ -17,9 +11,6 @@ $(document).ready(function() {
     initTooltips();
 });
 
-/**
- * Animate statistics counters on home page
- */
 function animateStatistics() {
     // Check if we're on the home page
     if ($('#stat-flights').length === 0) return;
@@ -30,13 +21,6 @@ function animateStatistics() {
     animateCounter('#stat-countries', 0, 195, 2000);
 }
 
-/**
- * Animate a number counter
- * @param {string} selector - jQuery selector
- * @param {number} start - Starting value
- * @param {number} end - Ending value
- * @param {number} duration - Animation duration in ms
- */
 function animateCounter(selector, start, end, duration) {
     const element = $(selector);
     if (element.length === 0) return;
@@ -62,18 +46,10 @@ function animateCounter(selector, start, end, duration) {
     requestAnimationFrame(updateCounter);
 }
 
-/**
- * Format number with thousand separators
- * @param {number} num - Number to format
- * @returns {string} Formatted number
- */
 function formatNumber(num) {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
 
-/**
- * Add smooth scrolling to anchor links
- */
 function addSmoothScrolling() {
     $('a[href^="#"]').on('click', function(event) {
         const target = $(this.getAttribute('href'));
@@ -86,9 +62,6 @@ function addSmoothScrolling() {
     });
 }
 
-/**
- * Initialize Bootstrap tooltips
- */
 function initTooltips() {
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.map(function(tooltipTriggerEl) {
@@ -96,9 +69,6 @@ function initTooltips() {
     });
 }
 
-/**
- * Show loading overlay
- */
 function showLoading() {
     if ($('.loading-overlay').length === 0) {
         $('body').append(`
@@ -114,20 +84,12 @@ function showLoading() {
     }
 }
 
-/**
- * Hide loading overlay
- */
 function hideLoading() {
     $('.loading-overlay').fadeOut(300, function() {
         $(this).remove();
     });
 }
 
-/**
- * Show toast notification
- * @param {string} message - Message to display
- * @param {string} type - Type of toast (success, error, warning, info)
- */
 function showToast(message, type = 'info') {
     const bgColor = {
         success: 'bg-success',
@@ -158,11 +120,6 @@ function showToast(message, type = 'info') {
     });
 }
 
-/**
- * Store data in localStorage
- * @param {string} key - Storage key
- * @param {any} data - Data to store
- */
 function storeData(key, data) {
     try {
         localStorage.setItem(key, JSON.stringify(data));
@@ -171,11 +128,6 @@ function storeData(key, data) {
     }
 }
 
-/**
- * Retrieve data from localStorage
- * @param {string} key - Storage key
- * @returns {any} Retrieved data or null
- */
 function getData(key) {
     try {
         const data = localStorage.getItem(key);
@@ -186,10 +138,6 @@ function getData(key) {
     }
 }
 
-/**
- * Clear stored data
- * @param {string} key - Storage key (optional, clears all if not provided)
- */
 function clearData(key) {
     if (key) {
         localStorage.removeItem(key);

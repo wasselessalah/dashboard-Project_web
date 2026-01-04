@@ -1,14 +1,6 @@
-/**
- * Flight & Passengers Tracker
- * Passengers JavaScript File
- * Handles RandomUser API and REST Countries API integration
- */
-
-// API URLs
 const RANDOM_USER_API = 'https://randomuser.me/api/';
 const REST_COUNTRIES_API = 'https://restcountries.com/v3.1/name/';
 
-// Country code mapping for REST Countries API
 const countryMapping = {
     'France': 'France',
     'United States': 'United States',
@@ -83,9 +75,6 @@ $(document).ready(function() {
     });
 });
 
-/**
- * Check if a flight is selected
- */
 function checkSelectedFlight() {
     const selectedFlight = localStorage.getItem('selectedFlight');
     
@@ -107,9 +96,6 @@ function checkSelectedFlight() {
     }
 }
 
-/**
- * Load demo flight data
- */
 function loadDemoFlightData() {
     const demoFlight = {
         callsign: 'TU724',
@@ -147,10 +133,6 @@ function loadDemoFlightData() {
     }
 }
 
-/**
- * Display selected flight info
- * @param {Object} flight - Flight data object
- */
 function displaySelectedFlight(flight) {
     $('#noFlightAlert').addClass('d-none');
     $('#selectedFlightInfo').removeClass('d-none');
@@ -186,9 +168,6 @@ function displaySelectedFlight(flight) {
     }
 }
 
-/**
- * Load passengers from RandomUser API
- */
 function loadPassengers() {
     // Show loading
     $('#passengersLoading').removeClass('d-none');
@@ -221,11 +200,6 @@ function loadPassengers() {
     });
 }
 
-/**
- * Generate demo passengers when API fails
- * @param {number} count - Number of passengers
- * @returns {Array} Array of passenger objects
- */
 function generateDemoPassengers(count) {
     const firstNames = ['Jean', 'Marie', 'Pierre', 'Sophie', 'Lucas', 'Emma', 'Louis', 'Chloé', 'Thomas', 'Léa',
                         'John', 'Sarah', 'Michael', 'Emily', 'David', 'Lisa', 'James', 'Anna', 'Robert', 'Julia'];
@@ -260,10 +234,6 @@ function generateDemoPassengers(count) {
     return passengers;
 }
 
-/**
- * Display passengers in the UI
- * @param {Array} passengers - Array of passenger objects
- */
 function displayPassengers(passengers) {
     // Hide loading
     $('#passengersLoading').addClass('d-none');
@@ -301,11 +271,6 @@ function displayPassengers(passengers) {
     });
 }
 
-/**
- * Get nationality name from code
- * @param {string} code - Country code
- * @returns {string} Nationality name
- */
 function getNationalityName(code) {
     const nationalities = {
         'FR': 'Français',
@@ -324,11 +289,6 @@ function getNationalityName(code) {
     return nationalities[code] || code;
 }
 
-/**
- * Get flag emoji from country code
- * @param {string} code - Country code
- * @returns {string} Flag emoji
- */
 function getFlagEmoji(code) {
     const flags = {
         'FR': '🇫🇷',
@@ -347,10 +307,6 @@ function getFlagEmoji(code) {
     return flags[code] || '🏳️';
 }
 
-/**
- * Show passengers error
- * @param {string} message - Error message
- */
 function showPassengersError(message) {
     $('#passengersLoading').addClass('d-none');
     $('#passengersList').removeClass('d-none').html(`
@@ -362,10 +318,6 @@ function showPassengersError(message) {
     `);
 }
 
-/**
- * Load country information from REST Countries API
- * @param {string} countryName - Name of the country
- */
 function loadCountryInfo(countryName) {
     // Show loading
     $('#countryLoading').removeClass('d-none');
@@ -398,10 +350,6 @@ function loadCountryInfo(countryName) {
     });
 }
 
-/**
- * Try partial match for country name
- * @param {string} countryName - Name of the country
- */
 function tryPartialCountryMatch(countryName) {
     $.ajax({
         url: `https://restcountries.com/v3.1/name/${encodeURIComponent(countryName)}`,
@@ -421,10 +369,6 @@ function tryPartialCountryMatch(countryName) {
     });
 }
 
-/**
- * Display demo country info when API fails
- * @param {string} countryName - Name of the country
- */
 function displayDemoCountryInfo(countryName) {
     const demoCountries = {
         'France': {
@@ -480,10 +424,6 @@ function displayDemoCountryInfo(countryName) {
     `);
 }
 
-/**
- * Display country information in the UI
- * @param {Object} country - Country data object
- */
 function displayCountryInfo(country) {
     // Hide loading
     $('#countryLoading').addClass('d-none');
